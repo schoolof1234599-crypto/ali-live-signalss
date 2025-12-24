@@ -2,104 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ali Live Signals</title>
+<title>Ali Live Trading Signals</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-    <script>
-fetch("signals.json")
-  .then(response => response.json())
-  .then(data => {
-    const box = document.getElementById("signals");
-    box.innerHTML = "";
-
-    data.forEach(signal => {
-      box.innerHTML += `
-        <div style="
-          background:#0f2027;
-          border:1px solid #00ffcc;
-          padding:15px;
-          margin:12px;
-          border-radius:12px;
-          color:white;
-          font-family:Arial;">
-          
-          <h3 style="color:#00ffcc">
-            ${signal.pair} — ${signal.type}
-          </h3>
-          <p>Entry: ${signal.entry}</p>
-          <p>TP: ${signal.tp}</p>
-          <p>SL: ${signal.sl}</p>
-        </div>
-      `;
-    });
-  })
-  .catch(err => {
-    document.getElementById("signals").innerHTML =
-      "❌ Signals load nahi ho rahe";
-  });
-</script>
-body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background:#0f2027;
-    background: linear-gradient(120deg,#0f2027,#203a43,#2c5364);
-    color:white;
-    text-align:center;
-}
-    <div id="signals"></div>
-header{
-    padding:30px;
-    font-size:28px;
-    font-weight:bold;
-}
-.card{
-    background:rgba(255,255,255,0.1);
-    margin:20px;
-    padding:20px;
-    border-radius:12px;
-}
-.btn{
-    display:inline-block;
-    margin-top:15px;
-    padding:12px 25px;
-    background:#00ffcc;
-    color:black;
-    text-decoration:none;
-    border-radius:25px;
-    font-weight:bold;
-}
-.footer{
-    margin-top:40px;
-    font-size:14px;
-    opacity:0.7;
-}
-</style>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+<header>
+  <h1>🚀 Ali Live Trading Signals</h1>
+  <p>Forex + Crypto | Urdu / English 🇵🇰</p>
+</header>
 
-<header>📈 Ali Live Trading Signals</header>
+<section id="signals" class="signal-container">
+  <!-- Signals load here -->
+</section>
 
-<div class="card">
-    <h2>🔥 Live Forex & Crypto Signals</h2>
-    <p>Accurate entries • SL • TP<br>Daily market updates</p>
-    <a class="btn" href="#">Join Telegram</a>
-</div>
-
-<div class="card">
-    <h2>⏰ Trading Sessions</h2>
-    <p>London • New York • Asia</p>
-</div>
-
-<div class="card">
-    <h2>📊 Risk Management</h2>
-    <p>1–2% Risk per Trade<br>Professional Strategy</p>
-</div>
-
-<div class="footer">
-    © 2025 Ali Live Signals
-</div>
-
+<script src="script.js"></script>
 </body>
 </html>
