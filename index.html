@@ -6,6 +6,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+    <script>
+fetch("signals.json")
+  .then(response => response.json())
+  .then(data => {
+    const box = document.getElementById("signals");
+    box.innerHTML = "";
+
+    data.forEach(signal => {
+      box.innerHTML += `
+        <div style="
+          background:#0f2027;
+          border:1px solid #00ffcc;
+          padding:15px;
+          margin:12px;
+          border-radius:12px;
+          color:white;
+          font-family:Arial;">
+          
+          <h3 style="color:#00ffcc">
+            ${signal.pair} — ${signal.type}
+          </h3>
+          <p>Entry: ${signal.entry}</p>
+          <p>TP: ${signal.tp}</p>
+          <p>SL: ${signal.sl}</p>
+        </div>
+      `;
+    });
+  })
+  .catch(err => {
+    document.getElementById("signals").innerHTML =
+      "❌ Signals load nahi ho rahe";
+  });
+</script>
 body{
     margin:0;
     font-family: Arial, sans-serif;
@@ -14,6 +47,7 @@ body{
     color:white;
     text-align:center;
 }
+    <div id="signals"></div>
 header{
     padding:30px;
     font-size:28px;
