@@ -1,9 +1,10 @@
 [
   {
     "pair": "BTCUSDT",
-    "type": "BUY",
-    "entry": "42500",
+    "type": "SELL",
+    "entry": "44000",
     "tp": "43000",
-    "sl": "42000"
+    "sl": "44500",
+    "note": "Rejection zone ⚠️"
   }
 ]
