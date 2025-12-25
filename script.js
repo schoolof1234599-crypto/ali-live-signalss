@@ -1,20 +1,29 @@
-fetch("signals.json")
-.then(res => res.json())
-.then(data => {
-  const box = document.getElementById("signals");
-  box.innerHTML = "";
+setTimeout(()=>{
+ document.getElementById("loading").style.display="none";
+ document.getElementById("app").style.display="block";
+ loadData();
+},1000);
 
-  data.forEach(s => {
-    box.innerHTML += `
-      <div class="card">
-        <h2 class="${s.type === 'BUY' ? 'buy' : 'sell'}">
-          ${s.type} - ${s.pair}
-        </h2>
-        <p>Entry: ${s.entry}</p>
-        <p>TP: ${s.tp}</p>
-        <p>SL: ${s.sl}</p>
-        <p class="note">${s.note}</p>
-      </div>
-    `;
-  });
-});
+function setMode(m){
+ alert("Mode: "+m);
+}
+
+function loadData(){
+ fetch("signals.json")
+ .then(r=>r.json())
+ .then(d=>{
+   document.getElementById("signalBox").innerHTML =
+   `Next: ${d.signal.number} | ${d.signal.size} | ${d.signal.color}`;
+
+   let h="";
+   d.history.forEach(x=>{
+     h+=`<tr>
+     <td>${x.p}</td>
+     <td>${x.n}</td>
+     <td>${x.s}</td>
+     <td>${x.c}</td>
+     </tr>`;
+   });
+   document.getElementById("history").innerHTML=h;
+ });
+}
