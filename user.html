@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="ur">
 <head>
 <meta charset="UTF-8">
-<title>Live Trading Signal</title>
+<title>🟢 Ali Live Signal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Firebase -->
@@ -12,35 +12,39 @@
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
-  background:#0f172a;
+  font-family:Arial;
+  background:linear-gradient(135deg,#16a34a,#064e3b);
   color:white;
   text-align:center;
 }
-
 .box{
-  margin-top:80px;
-  padding:30px;
-  border-radius:15px;
-  background:#020617;
+  margin:40px auto;
   width:90%;
-  max-width:400px;
-  margin-left:auto;
-  margin-right:auto;
-  box-shadow:0 0 20px #22c55e;
+  max-width:360px;
+  background:#022c22;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 0 25px #22c55e;
 }
-
+h1{color:#86efac}
 .signal{
-  font-size:50px;
+  font-size:48px;
   margin:20px 0;
 }
-
-.big{color:#22c55e;}
-.small{color:#ef4444;}
-
-.time{
-  font-size:18px;
-  opacity:0.8;
+.time{color:#bbf7d0}
+.menu{
+  margin-top:20px;
+}
+.menu div{
+  background:#14532d;
+  margin:8px 0;
+  padding:12px;
+  border-radius:12px;
+}
+.footer{
+  margin-top:20px;
+  font-size:13px;
+  color:#bbf7d0;
 }
 </style>
 </head>
@@ -48,43 +52,41 @@ body{
 <body>
 
 <div class="box">
-  <h2>📡 LIVE SIGNAL</h2>
+  <h1>📡 LIVE SIGNAL</h1>
 
-  <div id="signal" class="signal">WAITING...</div>
+  <div class="signal" id="signal">⏳ WAITING...</div>
+  <div class="time" id="time">---</div>
 
-  <div class="time">
-    ⏱ Time: <span id="time">--</span>
+  <div class="menu">
+    <div>📊 Signals</div>
+    <div>🕒 Session Time<br>12:30 | 2:00 | 4:00</div>
+    <div>💡 Hacks (Coming Soon)</div>
+    <div>📈 Weekly Profit: 10,000 PKR</div>
+  </div>
+
+  <div class="footer">
+    👥 Users Live | 🔔 Auto Update
   </div>
 </div>
 
 <script>
-  // 🔥 Firebase config (وہی جو Admin میں ہے)
+  // 🔥 Firebase CONFIG (یہی رہنے دو)
   var firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "XXXX",
-    appId: "XXXX"
+    databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
   };
-
   firebase.initializeApp(firebaseConfig);
 
-  // 🔥 LIVE SIGNAL LISTENER
-  firebase.database().ref("signal").on("value", function(snapshot){
+  var db = firebase.database();
+
+  // 🔴 LIVE SIGNAL LISTENER
+  db.ref("signal").on("value", function(snapshot){
     var data = snapshot.val();
     if(data){
-      var s = document.getElementById("signal");
-      s.innerText = data.current;
+      document.getElementById("signal").innerText =
+        data.current === "BIG" ? "🟢 BIG" : "🔴 SMALL";
 
-      if(data.current === "BIG"){
-        s.className = "signal big";
-      }else{
-        s.className = "signal small";
-      }
-
-      document.getElementById("time").innerText = data.time;
+      document.getElementById("time").innerText =
+        "⏱ Time: " + data.time;
     }
   });
 </script>
