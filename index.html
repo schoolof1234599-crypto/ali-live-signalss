@@ -9,13 +9,42 @@
 
 <body>
 
-<div class="app">
-  <h1>🚀 Ali Live Trading Signals</h1>
-  <p class="sub">Forex + Crypto | Urdu / English 🇵🇰</p>
+<!-- LOADING -->
+<div id="loading">Loading...</div>
 
-  <div id="signals"></div>
+<!-- APP -->
+<div id="app" style="display:none;">
+
+<h1>🚀 Ali Live Trading Signals</h1>
+<p>Forex + Crypto | اردو / English 🇵🇰</p>
+
+<!-- OPTIONS -->
+<div class="options">
+  <button onclick="setMode('WinGo 1 Min')">WinGo 1 Min</button>
+  <button onclick="setMode('WinGo 30 Sec')">WinGo 30 Sec</button>
+  <button onclick="setMode('WinGo 1 Sec')">WinGo 1 Sec</button>
+</div>
+
+<!-- SIGNAL -->
+<div class="signal" id="signalBox">
+  Loading Signal...
+</div>
+
+<!-- HISTORY -->
+<table>
+<thead>
+<tr>
+<th>Period</th>
+<th>Number</th>
+<th>Big/Small</th>
+<th>Color</th>
+</tr>
+</thead>
+<tbody id="history"></tbody>
+</table>
+
 </div>
 
 <script src="script.js"></script>
 </body>
-</html>
+  </html>
