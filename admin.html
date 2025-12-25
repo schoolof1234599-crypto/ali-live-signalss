@@ -3,6 +3,7 @@
 <head>
   <title>Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body{
       background:#0b1220;
@@ -30,6 +31,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <h1>🔐 Admin Panel</h1>
@@ -51,28 +53,21 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-  
-function adminLogin() {
+  // ✅ ADMIN PASSWORD (یہی اصل ہے)
+  const adminPassword = "Asad11";
 
-  var entered = document.getElementById("adminPass").value;
-  var saved = "Asad11";
-
-  if (entered == saved) {
-    document.getElementById("adminPanel").style.display = "block";
-  } else {
-    alert("Password wrong");
-  }
-}
-
-
+  // 🔥 Firebase config
   var firebaseConfig = {
     databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
   };
   firebase.initializeApp(firebaseConfig);
 
   function send(value){
-    if(document.getElementById("pass").value !== adminPassword){
-      alert("Wrong Password");
+
+    var entered = document.getElementById("pass").value;
+
+    if(entered !== adminPassword){
+      alert("❌ Password wrong");
       return;
     }
 
@@ -83,9 +78,9 @@ function adminLogin() {
       updatedAt: Date.now()
     });
 
-    alert("Signal Updated: " + value);
+    alert("✅ Signal Updated: " + value);
   }
 </script>
 
 </body>
-  </html>
+</html>
