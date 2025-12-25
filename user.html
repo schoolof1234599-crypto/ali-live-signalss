@@ -1,182 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>User Panel – Signals</title>
+<title>Live Trading Signal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
-  margin:0;
-  min-height:100vh;
-  background:#020617;
-  font-family:Arial, sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#e5e7eb;
-}
-.app{
-  width:330px;
-  background:#0b1220;
-  border-radius:18px;
-  padding:18px;
-  box-shadow:0 0 25px #22d3ee;
+  background:linear-gradient(135deg,#020617,#0f172a);
+  color:white;
+  font-family:Arial;
   text-align:center;
-}
-h2{color:#22d3ee;margin:0 0 8px}
-.timer{font-size:26px;color:#facc15}
-.signal{font-size:30px;margin:8px 0}
-.big{color:#22c55e}
-.small{color:#ef4444}
-
-button{
-  width:100%;
-  padding:13px;
-  margin:6px 0;
-  font-size:17px;
-  font-weight:bold;
-  border:none;
-  border-radius:12px;
+  padding:20px;
 }
 
-.bigBtn{background:#22c55e;color:#022c22}
-.smallBtn{background:#ef4444;color:#450a0a}
+#signal{
+  font-size:48px;
+  margin:40px 0;
+}
 
-.voteBox{
-  margin-top:10px;
-  padding:10px;
+.big{
+  color:#22c55e;
+}
+
+.small{
+  color:#ef4444;
+}
+
+.box{
   background:#020617;
-  border-radius:12px;
+  padding:20px;
+  border-radius:15px;
+  margin:15px;
 }
-.voteBtn{
-  width:48%;
-  display:inline-block;
-}
-.profit{background:#16a34a;color:black}
-.loss{background:#dc2626;color:white}
-
-.stats{
-  margin-top:8px;
-  font-size:14px;
-}
-.footer{font-size:12px;color:#94a3b8;margin-top:6px}
 </style>
 </head>
 
 <body>
 
-<div class="app">
-  <h2>📡 Live Signal</h2>
+<h1>📡 LIVE SIGNAL</h1>
 
-  <div class="timer" id="timer">⏳ 30</div>
-  <h3 id="signal">🔴 NO SIGNAL YET</h3>
+<h2 id="signal">⏳ NO SIGNAL YET</h2>
 
-  <button class="bigBtn" onclick="setSignal('BIG')">BIG 🔊</button>
-  <button class="smallBtn" onclick="setSignal('SMALL')">SMALL 🔊</button>
-
-  <!-- PROFIT / LOSS -->
-  <div class="voteBox">
-    <button class="voteBtn profit" onclick="vote('profit')">✅ PROFIT</button>
-    <button class="voteBtn loss" onclick="vote('loss')">❌ LOSS</button>
-
-    <div class="stats" id="statsText">
-      Profit: 0% | Loss: 0% <br>
-      Total Votes: 0
-    </div>
-  </div>
-
-  <div class="footer">Urdu + English • Level 2</div>
+<div class="box">
+  <p>Session Time</p>
+  <p>🕛 12:30 PM</p>
+  <p>🕑 2:00 PM</p>
+  <p>🕓 4:00 PM</p>
 </div>
 
-<script>
-/* sounds */
-const bigSound = new Audio("big.mp3");
-const smallSound = new Audio("small.mp3");
+<div class="box">
+  <button onclick="showProfit()">✅ PROFIT</button>
+  <button onclick="showLoss()">❌ LOSS</button>
+</div>
 
-/* elements */
-const timerEl = document.getElementById("timer");
-const signalEl = document.getElementById("signalText");
-const statsEl = document.getElementById("statsText");
+<p id="voteResult"></p>
 
-let time = 30;
-let t;
-
-/* votes */
-let profitVotes = Number(localStorage.getItem("profit")) || 0;
-let lossVotes   = Number(localStorage.getItem("loss")) || 0;
-updateStats();
-
-/* timer */
-function startTimer(){
-  clearInterval(t);
-  time = 30;
-  timerEl.innerText = "⏳ " + time;
-  t = setInterval(()=>{
-    time--;
-    timerEl.innerText = "⏳ " + time;
-    if(time <= 0){
-      clearInterval(t);
-      timerEl.innerText = "⏳ Waiting…";
-    }
-  },1000);
-}
-
-/* signal */
-function setSignal(val){
-  startTimer();
-
-  if(val==="BIG"){
-    bigSound.play();
-    signalEl.className="signal big";
-  }else{
-    smallSound.play();
-    signalEl.className="signal small";
-  }
-
-  if(navigator.vibrate) navigator.vibrate(200);
-  signalEl.innerText = val + " آیا";
-}
-
-/* vote */
-function vote(type){
-  if(type==="profit") profitVotes++;
-  else lossVotes++;
-
-  localStorage.setItem("profit",profitVotes);
-  localStorage.setItem("loss",lossVotes);
-
-  updateStats();
-}
-
-/* update percentage */
-function updateStats(){
-  const total = profitVotes + lossVotes;
-  let p = total ? Math.round((profitVotes/total)*100) : 0;
-  let l = total ? 100 - p : 0;
-
-  statsEl.innerHTML = `
-    Profit: ${p}% | Loss: ${l}% <br>
-    Total Votes: ${total}
-  `;
-}
-  <script><audio id="bigSound">
+<!-- sounds -->
+<audio id="bigSound">
   <source src="big.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="smallSound">
   <source src="small.mp3" type="audio/mpeg">
 </audio>
-function setSignal(val){
-  document.getElementById("signal").innerText = val;
 
-  if(val === "BIG"){
-    document.getElementById("bigSound").play();
-  }else{
-    document.getElementById("smallSound").play();
-  }
+<script>
+// ⚠️ یہ line IMPORTANT ہے
+// یہی WAITING کو ختم کرتی ہے
+document.getElementById("signal").innerText = "⏳ NO SIGNAL YET";
+
+// یہ functions بعد میں admin سے connect ہوں گے
+function setBIG(){
+  document.getElementById("signal").innerHTML = "<span class='big'>🟢 BIG</span>";
+  document.getElementById("bigSound").play();
 }
-</script>
+
+function setSMALL(){
+  document.getElementById("signal").innerHTML = "<span class='small'>🔴 SMALL</span>";
+  document.getElementById("smallSound").play();
+}
+
+function showProfit(){
+  document.getElementById("voteResult").innerText = "You voted PROFIT ✅";
+}
+
+function showLoss(){
+  document.getElementById("voteResult").innerText = "You voted LOSS ❌";
+}
 </script>
 
 </body>
