@@ -1,84 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Admin Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{
+      background:#0b1220;
+      color:white;
+      text-align:center;
+      font-family:Arial;
+    }
+    h1{margin-top:30px}
+    button{
+      padding:15px 30px;
+      font-size:20px;
+      margin:10px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+    }
+    .big{background:green;color:white}
+    .small{background:red;color:white}
+    select,input{
+      padding:10px;
+      font-size:16px;
+      margin:5px;
+      border-radius:5px;
+      border:none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 Admin Panel</h1>
+
+<input type="password" id="pass" placeholder="Admin Password"><br>
+
+<select id="time">
+  <option value="1min">1 Minute</option>
+  <option value="3min">3 Minute</option>
+  <option value="5min">5 Minute</option>
+</select><br>
+
+<input type="text" id="msg" placeholder="Message (optional)"><br><br>
+
+<button class="big" onclick="send('BIG')">BIG</button>
+<button class="small" onclick="send('SMALL')">SMALL</button>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-<style>
-body{
-  background:#020617;
-  color:white;
-  font-family:Arial;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  background:#0f172a;
-  padding:25px;
-  border-radius:15px;
-  width:90%;
-  max-width:350px;
-  text-align:center;
-}
-button{
-  width:100%;
-  padding:15px;
-  margin:10px 0;
-  font-size:18px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
-.big{background:#22c55e}
-.small{background:#ef4444}
-</style>
-</head>
-
-<body>
-
-<div class="box" id="loginBox">
-  <h2>Admin Login</h2>
-  <input type="password" id="pass" placeholder="Enter Password"
-   style="width:100%;padding:12px;border-radius:8px;border:none">
-  <br><br>
-  <button onclick="login()">LOGIN</button>
-</div>
-
-<div class="box" id="panel" style="display:none">
-  <h2>CONTROL PANEL</h2>
-  <button class="big" onclick="send('BIG')">BIG</button>
-  <button class="small" onclick="send('SMALL')">SMALL</button>
-</div>
-
 <script>
-var firebaseConfig = {
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-};
-firebase.initializeApp(firebaseConfig);
-var db = firebase.database();
+  const adminPassword = "Ali@123"; // 👈 change if needed
 
-function login(){
-  if(document.getElementById("pass").value === "Ali12"){
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("panel").style.display="block";
-  }else{
-    alert("Wrong Password");
+  var firebaseConfig = {
+    databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  function send(value){
+    if(document.getElementById("pass").value !== adminPassword){
+      alert("Wrong Password");
+      return;
+    }
+
+    firebase.database().ref("signal").set({
+      current: value,
+      time: document.getElementById("time").value,
+      message: document.getElementById("msg").value,
+      updatedAt: Date.now()
+    });
+
+    alert("Signal Updated: " + value);
   }
-}
-
-function send(val){
-  db.ref("signal").set({
-    current: val,
-    time: "1min"
-  });
-}
 </script>
 
 </body>
-</html>
+  </html>
