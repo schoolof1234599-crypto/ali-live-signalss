@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Ali Live Trading Signals</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
 
 <header>
   <h1>🚀 Ali Live Trading Signals</h1>
@@ -14,6 +15,20 @@
   <!-- Signals load here -->
 </section>
 
-<script src="script.js"></script>
+
+  <script>
+fetch('./signals.json')
+  .then(res => res.json())
+  .then(data => {
+    const s = data[0];
+    document.getElementById("signal").innerHTML = `
+      <h2>${s.type} • ${s.pair}</h2>
+      <p>Entry: ${s.entry}</p>
+      <p>TP: ${s.tp}</p>
+      <p>SL: ${s.sl}</p>
+      <b>${s.note}</b>
+    `;
+  });
+  </script>
 </body>
 </html>
