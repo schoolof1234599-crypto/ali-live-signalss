@@ -54,6 +54,20 @@
     alert("Signal Updated: " + value);
   }
 </script>
+  <!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+var firebaseConfig = {
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+};
+firebase.initializeApp(firebaseConfig);
+
+firebase.database().ref("signal/current").on("value", function(snapshot) {
+  document.getElementById("signal").innerText = snapshot.val();
+});
+</script>
 
 </body>
 </html>
