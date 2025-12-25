@@ -2,163 +2,80 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>User Panel – Live Signals</title>
+<title>User Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
-  min-height:100vh;
-  background:#020617;
-  font-family:Arial, sans-serif;
+  height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  color:#e5e7eb;
+  background:#0f172a;
+  font-family:Arial, sans-serif;
 }
-.app{
-  width:320px;
-  background:#0b1220;
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 0 25px #22d3ee;
+
+.box{
+  background:#020617;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 0 20px #38bdf8;
   text-align:center;
+  width:280px;
 }
+
 h2{
-  margin:0 0 10px;
-  color:#22d3ee;
+  color:#38bdf8;
+  margin-bottom:20px;
 }
-.timer{
-  font-size:28px;
-  margin:10px 0;
-  color:#facc15;
-}
-.signal{
-  font-size:32px;
-  margin:10px 0;
-}
-.signal.big{color:#22c55e}
-.signal.small{color:#ef4444}
 
 button{
   width:100%;
-  padding:14px;
-  margin:8px 0;
+  padding:15px;
+  margin:10px 0;
   font-size:18px;
   font-weight:bold;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   cursor:pointer;
 }
-.bigBtn{background:#22c55e;color:#022c22}
-.smallBtn{background:#ef4444;color:#450a0a}
 
-.history{
-  text-align:left;
-  margin-top:12px;
-  font-size:14px;
+.big{
+  background:#22c55e;
+  color:#022c22;
 }
-.history div{
-  padding:4px 0;
-  border-bottom:1px dashed #334155;
-}
-.footer{
-  margin-top:10px;
-  font-size:12px;
-  color:#94a3b8;
+
+.small{
+  background:#ef4444;
+  color:#450a0a;
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
-  <h2>📡 Live Signal</h2>
+<div class="box">
+  <h2>USER PANEL</h2>
 
-  <div class="timer" id="timer">⏳ 30</div>
-
-  <div class="signal" id="signalText">WAITING…</div>
-
-  <button class="bigBtn" onclick="setSignal('BIG')">BIG 🔊</button>
-  <button class="smallBtn" onclick="setSignal('SMALL')">SMALL 🔊</button>
-
-  <div class="history">
-    <b>📜 History</b>
-    <div id="historyBox"></div>
-  </div>
-
-  <div class="footer">
-    Urdu + English • App Style 📱
-  </div>
+  <button class="big" onclick="playBig()">BIG</button>
+  <button class="small" onclick="playSmall()">SMALL</button>
 </div>
 
 <script>
-/* sounds */
-const bigSound = new Audio("big.mp3");
-const smallSound = new Audio("small.mp3");
+  // Audio files (same folder)
+  var bigSound = new Audio("big.mp3");
+  var smallSound = new Audio("small.mp3");
 
-/* elements */
-const timerEl = document.getElementById("timer");
-const signalEl = document.getElementById("signalText");
-const historyBox = document.getElementById("historyBox");
-
-let time = 30;
-let t;
-let history = [];
-
-/* countdown */
-function startTimer(){
-  clearInterval(t);
-  time = 30;
-  timerEl.innerText = "⏳ " + time;
-  t = setInterval(()=>{
-    time--;
-    timerEl.innerText = "⏳ " + time;
-    if(time <= 0){
-      clearInterval(t);
-      timerEl.innerText = "⏳ Waiting…";
-    }
-  },1000);
-}
-
-/* set signal */
-function setSignal(val){
-  startTimer();
-
-  // sound
-  if(val === "BIG"){
+  function playBig(){
     bigSound.currentTime = 0;
     bigSound.play();
-    signalEl.className = "signal big";
-  }else{
+  }
+
+  function playSmall(){
     smallSound.currentTime = 0;
     smallSound.play();
-    signalEl.className = "signal small";
   }
-
-  // vibration
-  if(navigator.vibrate){
-    navigator.vibrate(200);
-  }
-
-  // text
-  signalEl.innerText = val + " آیا";
-
-  // history
-  history.unshift(val + " • " + new Date().toLocaleTimeString());
-  history = history.slice(0,5);
-  renderHistory();
-}
-
-/* render history */
-function renderHistory(){
-  historyBox.innerHTML = "";
-  history.forEach(h=>{
-    const d = document.createElement("div");
-    d.innerText = h;
-    historyBox.appendChild(d);
-  });
-}
 </script>
 
 </body>
