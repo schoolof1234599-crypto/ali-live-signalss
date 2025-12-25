@@ -1,88 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Admin Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body style="background:black;color:white;text-align:center">
 
-<style>
-body{
-  background:#0b1220;
-  color:white;
-  text-align:center;
-  font-family:Arial;
-}
-input,select,button{
-  padding:12px;
-  margin:8px;
-  font-size:16px;
-  border-radius:8px;
-  border:none;
-}
-.big{background:green;color:white}
-.small{background:red;color:white}
-</style>
-</head>
+<h2>ADMIN</h2>
+<input id="pin" placeholder="PIN"><br><br>
 
-<body>
+<button onclick="send('BIG')">BIG</button>
+<button onclick="send('SMALL')">SMALL</button>
 
-<h2>🔐 Admin Panel</h2>
-
-<input type="password" id="pass" placeholder="Admin PIN"><br>
-
-<select id="time">
-  <option>1 sec</option>
-  <option>30 sec</option>
-  <option>1 min</option>
-</select><br>
-
-<button class="big" onclick="send('BIG')">BIG</button>
-<button class="small" onclick="send('SMALL')">SMALL</button>
-
-<script src="firebase.js"></script>
-<script>
-const adminPassword = "Asad11";
-
-function send(val){
-  if(pass.value !== adminPassword){
-    alert("Wrong PIN");
-    return;
-  }
-
-  firebase.database().ref("signal").set({
-    current: val,
-    time: time.value
-  });
-
-  alert("Signal Sent: " + val);
-}
-</script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-var firebaseConfig = {
+firebase.initializeApp({
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-};
-firebase.initializeApp(firebaseConfig);
-</script>
-  <script>
-const adminPassword = "Asad11";
+});
 
-function send(val){
-  if(pass.value !== adminPassword){
-    alert("Wrong PIN");
+function send(v){
+  if(pin.value !== "1234"){
+    alert("غلط PIN");
     return;
   }
-
-  firebase.database().ref("signal").set({
-    current: val,
-    time: time.value
-  });
-
-  alert("Signal Sent: " + val);
+  firebase.database().ref("signal").set(v);
 }
-  </script>
+</script>
 
 </body>
-                                               </html>
+</html>
