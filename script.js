@@ -1,29 +1,11 @@
-setTimeout(()=>{
- document.getElementById("loading").style.display="none";
- document.getElementById("app").style.display="block";
- loadData();
-},1000);
+<!-- Firebase v8 -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-function setMode(m){
- alert("Mode: "+m);
-}
-
-function loadData(){
- fetch("signals.json")
- .then(r=>r.json())
- .then(d=>{
-   document.getElementById("signalBox").innerHTML =
-   `Next: ${d.signal.number} | ${d.signal.size} | ${d.signal.color}`;
-
-   let h="";
-   d.history.forEach(x=>{
-     h+=`<tr>
-     <td>${x.p}</td>
-     <td>${x.n}</td>
-     <td>${x.s}</td>
-     <td>${x.c}</td>
-     </tr>`;
-   });
-   document.getElementById("history").innerHTML=h;
- });
-}
+<script>
+  var firebaseConfig = {
+    databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
