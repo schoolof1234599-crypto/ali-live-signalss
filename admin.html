@@ -1,86 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body{
-      background:#0b1220;
-      color:white;
-      text-align:center;
-      font-family:Arial;
-    }
-    h1{margin-top:30px}
-    button{
-      padding:15px 30px;
-      font-size:20px;
-      margin:10px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-    }
-    .big{background:green;color:white}
-    .small{background:red;color:white}
-    select,input{
-      padding:10px;
-      font-size:16px;
-      margin:5px;
-      border-radius:5px;
-      border:none;
-    }
-  </style>
+<style>
+body{
+  background:#0b1220;
+  color:white;
+  text-align:center;
+  font-family:Arial;
+}
+input,select,button{
+  padding:12px;
+  margin:8px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+}
+.big{background:green;color:white}
+.small{background:red;color:white}
+</style>
 </head>
 
 <body>
 
-<h1>🔐 Admin Panel</h1>
+<h2>🔐 Admin Panel</h2>
 
-<input type="password" id="pass" placeholder="Admin Password"><br>
+<input type="password" id="pass" placeholder="Admin PIN"><br>
 
 <select id="time">
-  <option value="1min">1 Minute</option>
-  <option value="3min">3 Minute</option>
-  <option value="5min">5 Minute</option>
+  <option>1 sec</option>
+  <option>30 sec</option>
+  <option>1 min</option>
 </select><br>
-
-<input type="text" id="msg" placeholder="Message (optional)"><br><br>
 
 <button class="big" onclick="send('BIG')">BIG</button>
 <button class="small" onclick="send('SMALL')">SMALL</button>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
+<script src="firebase.js"></script>
 <script>
-  // ✅ ADMIN PASSWORD (یہی اصل ہے)
-  const adminPassword = "Asad11";
+const adminPassword = "Asad11";
 
-  // 🔥 Firebase config
-  var firebaseConfig = {
-    databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-  };
-  firebase.initializeApp(firebaseConfig);
-
-  function send(value){
-
-    var entered = document.getElementById("pass").value;
-
-    if(entered !== adminPassword){
-      alert("❌ Password wrong");
-      return;
-    }
-
-    firebase.database().ref("signal").set({
-      current: value,
-      time: document.getElementById("time").value,
-      message: document.getElementById("msg").value,
-      updatedAt: Date.now()
-    });
-
-    alert("✅ Signal Updated: " + value);
+function send(val){
+  if(pass.value !== adminPassword){
+    alert("Wrong PIN");
+    return;
   }
+
+  firebase.database().ref("signal").set({
+    current: val,
+    time: time.value
+  });
+
+  alert("Signal Sent: " + val);
+}
 </script>
 
 </body>
-</html>
+                                               </html>
