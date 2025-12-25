@@ -1,10 +1,13 @@
-[
-  {
-    "pair": "BTCUSDT",
-    "type": "SELL",
-    "entry": "44000",
-    "tp": "43000",
-    "sl": "44500",
-    "note": "Rejection zone ⚠️"
+{
+  "mode": "WinGo 1 Min",
+  "status": "ON",
+  "next": {
+    "number": 7,
+    "size": "Big",
+    "color": "Green"
+  },
+  "note": {
+    "en": "Strong Buy",
+    "ur": "Strong Signal 🚀"
   }
-]
+}
