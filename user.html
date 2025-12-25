@@ -1,35 +1,129 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>🟢 Ali Live Signal</title>
+<title>Live Signal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(135deg,#020617,#020617);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card{
+  width:90%;
+  max-width:400px;
+  background:#020617;
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 0 30px #22c55e;
+}
+
+h1{
+  margin-bottom:20px;
+}
+
+.signal{
+  font-size:40px;
+  font-weight:bold;
+  margin:20px 0;
+}
+
+.big{color:#22c55e;}
+.small{color:#ef4444;}
+
+.time{
+  opacity:0.8;
+  margin-bottom:20px;
+}
+
+.buttons button{
+  width:45%;
+  padding:12px;
+  font-size:16px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.profit{
+  background:#22c55e;
+  color:black;
+}
+
+.loss{
+  background:#ef4444;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>📡 LIVE SIGNAL</h1>
+
+  <div id="signal" class="signal">WAITING...</div>
+  <div id="time" class="time">Time: --</div>
+
+  <div class="buttons">
+    <button class="profit" onclick="vote('profit')">✅ PROFIT</button>
+    <button class="loss" onclick="vote('loss')">❌ LOSS</button>
+  </div>
+</div>
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
 var firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://PASTE_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "PASTE_PROJECT_ID"
-};signal
-   size: "BIG"
-   time: "12:30 PM"
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+};
 
 firebase.initializeApp(firebaseConfig);
 
-firebase.database().ref("signal").on("value", function(snap) {
-  var data = snap.val();
+// LIVE SIGNAL LISTENER
+var signalRef = firebase.database().ref("signal");
 
-  if (data) {
-    document.getElementById("signal").innerText = data.size;
+signalRef.on("value", function(snapshot) {
+  var data = snapshot.val();
+
+  if(data && data.size){
+    var signalBox = document.getElementById("signal");
+    signalBox.innerText = data.size;
+
+    if(data.size === "BIG"){
+      signalBox.className = "signal big";
+    }else{
+      signalBox.className = "signal small";
+    }
+
     document.getElementById("time").innerText = "Time: " + data.time;
+  }else{
+    document.getElementById("signal").innerText = "WAITING...";
+    document.getElementById("time").innerText = "Time: --";
   }
 });
-                                     </script>
+
+// PROFIT / LOSS VOTE
+function vote(type){
+  firebase.database().ref("votes").push({
+    type:type,
+    time:new Date().toLocaleTimeString()
+  });
+
+  alert("Thanks for your feedback ❤️");
+}
 </script>
 
 </body>
-</html>
+  </html>
