@@ -51,7 +51,19 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-  const adminPassword = "11";
+  
+function adminLogin() {
+
+  var entered = document.getElementById("adminPass").value;
+  var saved = "Asad11";
+
+  if (entered == saved) {
+    document.getElementById("adminPanel").style.display = "block";
+  } else {
+    alert("Password wrong");
+  }
+}
+
 
   var firebaseConfig = {
     databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
