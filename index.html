@@ -1,50 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Ali Live Trading Signals</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+<title>Login</title>
+<style>
+body{
+ background:#020617;
+ color:white;
+ font-family:Segoe UI;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
+}
+.box{
+ background:#020617;
+ padding:20px;
+ width:90%;
+ max-width:320px;
+ border-radius:16px;
+ box-shadow:0 0 15px #22c55e;
+}
+input,button{
+ width:100%;
+ padding:12px;
+ margin-top:10px;
+ border:none;
+ border-radius:12px;
+}
+button{background:#22c55e;font-weight:bold}
+</style>
 </head>
-
 <body>
 
-<!-- LOADING SCREEN -->
-<div id="loading">Loading...</div>
-
-<!-- MAIN APP -->
-<div id="app" style="display:none;">
-
-<h1>🚀 Ali Live Trading Signals</h1>
-<p>Forex + Crypto | اردو / English 🇵🇰</p>
-
-<!-- OPTIONS -->
-<div class="options">
-<button onclick="setMode('WinGo 1 Min')">WinGo 1 Min</button>
-<button onclick="setMode('WinGo 30 Sec')">WinGo 30 Sec</button>
-<button onclick="setMode('WinGo 1 Sec')">WinGo 1 Sec</button>
+<div class="box">
+<h3>🔐 Login</h3>
+<input placeholder="Username">
+<input type="password" placeholder="Password">
+<button onclick="login()">Login</button>
 </div>
 
-<!-- SIGNAL BOX -->
-<div id="signalBox" class="signal">
-Loading Signal...
-</div>
+<script>
+function login(){
+  window.location = "home.html";
+}
+</script>
 
-<!-- HISTORY TABLE -->
-<table>
-<thead>
-<tr>
-<th>Period</th>
-<th>Number</th>
-<th>Big/Small</th>
-<th>Color</th>
-</tr>
-</thead>
-<tbody id="history"></tbody>
-</table>
-
-</div>
-
-<script src="script.js"></script>
 </body>
 </html>
