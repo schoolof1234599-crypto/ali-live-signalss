@@ -120,6 +120,9 @@ function vote(type){
   firebase.database().ref("votes/"+type).transaction(v=>(v||0)+1);
 }
 </script>
+  <audio id="smallSound">
+  <source src="small.mp3" type="audio/mpeg">
+  </audio>
 
 </body>
 </html>
