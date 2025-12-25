@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Live Signal</title>
+<title>Ali Live Signals</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
   font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#020617,#020617);
+  background:linear-gradient(135deg,#020617,#020024,#020617);
   color:white;
   display:flex;
   justify-content:center;
@@ -17,68 +17,66 @@ body{
   height:100vh;
 }
 
-.card{
+.box{
   width:90%;
-  max-width:400px;
+  max-width:380px;
   background:#020617;
   border-radius:20px;
   padding:30px;
   text-align:center;
-  box-shadow:0 0 30px #22c55e;
+  box-shadow:0 0 25px #22c55e;
 }
 
 h1{
-  margin-bottom:20px;
+  margin-bottom:10px;
 }
 
 .signal{
-  font-size:40px;
-  font-weight:bold;
+  font-size:48px;
   margin:20px 0;
+  font-weight:bold;
 }
 
-.big{color:#22c55e;}
-.small{color:#ef4444;}
+.waiting{ color:#94a3b8; }
+.big{ color:#22c55e; }
+.small{ color:#ef4444; }
 
 .time{
   opacity:0.8;
   margin-bottom:20px;
 }
 
-.buttons button{
-  width:45%;
-  padding:12px;
-  font-size:16px;
+button{
+  padding:12px 20px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
+  font-size:18px;
+  margin:10px;
   cursor:pointer;
 }
 
-.profit{
-  background:#22c55e;
-  color:black;
-}
-
-.loss{
-  background:#ef4444;
-  color:white;
-}
+.profit{ background:#22c55e; color:black; }
+.loss{ background:#ef4444; color:white; }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="box">
   <h1>📡 LIVE SIGNAL</h1>
 
-  <div id="signal" class="signal">WAITING...</div>
-  <div id="time" class="time">Time: --</div>
+  <div id="signal" class="signal waiting">WAITING...</div>
+  <div id="time" class="time">⏱ Time: --</div>
 
-  <div class="buttons">
+  <div>
     <button class="profit" onclick="vote('profit')">✅ PROFIT</button>
     <button class="loss" onclick="vote('loss')">❌ LOSS</button>
   </div>
 </div>
+
+<!-- Sounds -->
+<audio id="bigSound" src="big.mp3"></audio>
+<audio id="smallSound" src="small.mp3"></audio>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -88,42 +86,40 @@ h1{
 var firebaseConfig = {
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
 };
-
 firebase.initializeApp(firebaseConfig);
 
-// LIVE SIGNAL LISTENER
-var signalRef = firebase.database().ref("signal");
+const signalBox = document.getElementById("signal");
+const timeBox   = document.getElementById("time");
+const bigSound  = document.getElementById("bigSound");
+const smallSound= document.getElementById("smallSound");
 
-signalRef.on("value", function(snapshot) {
-  var data = snapshot.val();
+firebase.database().ref("signal").on("value", snap=>{
+  if(!snap.exists()) return;
 
-  if(data && data.size){
-    var signalBox = document.getElementById("signal");
-    signalBox.innerText = data.size;
+  const data = snap.val();
 
-    if(data.size === "BIG"){
-      signalBox.className = "signal big";
-    }else{
-      signalBox.className = "signal small";
-    }
+  timeBox.innerText = "⏱ Time: " + data.time;
 
-    document.getElementById("time").innerText = "Time: " + data.time;
-  }else{
-    document.getElementById("signal").innerText = "WAITING...";
-    document.getElementById("time").innerText = "Time: --";
+  if(data.size === "BIG"){
+    signalBox.innerText = "BIG";
+    signalBox.className = "signal big";
+    bigSound.play();
+  }
+  else if(data.size === "SMALL"){
+    signalBox.innerText = "SMALL";
+    signalBox.className = "signal small";
+    smallSound.play();
+  }
+  else{
+    signalBox.innerText = "WAITING...";
+    signalBox.className = "signal waiting";
   }
 });
 
-// PROFIT / LOSS VOTE
 function vote(type){
-  firebase.database().ref("votes").push({
-    type:type,
-    time:new Date().toLocaleTimeString()
-  });
-
-  alert("Thanks for your feedback ❤️");
+  firebase.database().ref("votes/"+type).transaction(v=>(v||0)+1);
 }
 </script>
 
 </body>
-  </html>
+</html>
