@@ -2,80 +2,164 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>User Panel</title>
+<title>User Panel – Signals</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
-  height:100vh;
+  min-height:100vh;
+  background:#020617;
+  font-family:Arial, sans-serif;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#0f172a;
-  font-family:Arial, sans-serif;
+  color:#e5e7eb;
 }
-
-.box{
-  background:#020617;
-  padding:30px;
-  border-radius:15px;
-  box-shadow:0 0 20px #38bdf8;
+.app{
+  width:330px;
+  background:#0b1220;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 0 25px #22d3ee;
   text-align:center;
-  width:280px;
 }
-
-h2{
-  color:#38bdf8;
-  margin-bottom:20px;
-}
+h2{color:#22d3ee;margin:0 0 8px}
+.timer{font-size:26px;color:#facc15}
+.signal{font-size:30px;margin:8px 0}
+.big{color:#22c55e}
+.small{color:#ef4444}
 
 button{
   width:100%;
-  padding:15px;
-  margin:10px 0;
-  font-size:18px;
+  padding:13px;
+  margin:6px 0;
+  font-size:17px;
   font-weight:bold;
   border:none;
-  border-radius:10px;
-  cursor:pointer;
+  border-radius:12px;
 }
 
-.big{
-  background:#22c55e;
-  color:#022c22;
-}
+.bigBtn{background:#22c55e;color:#022c22}
+.smallBtn{background:#ef4444;color:#450a0a}
 
-.small{
-  background:#ef4444;
-  color:#450a0a;
+.voteBox{
+  margin-top:10px;
+  padding:10px;
+  background:#020617;
+  border-radius:12px;
 }
+.voteBtn{
+  width:48%;
+  display:inline-block;
+}
+.profit{background:#16a34a;color:black}
+.loss{background:#dc2626;color:white}
+
+.stats{
+  margin-top:8px;
+  font-size:14px;
+}
+.footer{font-size:12px;color:#94a3b8;margin-top:6px}
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h2>USER PANEL</h2>
+<div class="app">
+  <h2>📡 Live Signal</h2>
 
-  <button class="big" onclick="playBig()">BIG</button>
-  <button class="small" onclick="playSmall()">SMALL</button>
+  <div class="timer" id="timer">⏳ 30</div>
+  <div class="signal" id="signalText">WAITING…</div>
+
+  <button class="bigBtn" onclick="setSignal('BIG')">BIG 🔊</button>
+  <button class="smallBtn" onclick="setSignal('SMALL')">SMALL 🔊</button>
+
+  <!-- PROFIT / LOSS -->
+  <div class="voteBox">
+    <button class="voteBtn profit" onclick="vote('profit')">✅ PROFIT</button>
+    <button class="voteBtn loss" onclick="vote('loss')">❌ LOSS</button>
+
+    <div class="stats" id="statsText">
+      Profit: 0% | Loss: 0% <br>
+      Total Votes: 0
+    </div>
+  </div>
+
+  <div class="footer">Urdu + English • Level 2</div>
 </div>
 
 <script>
-  // Audio files (same folder)
-  var bigSound = new Audio("big.mp3");
-  var smallSound = new Audio("small.mp3");
+/* sounds */
+const bigSound = new Audio("big.mp3");
+const smallSound = new Audio("small.mp3");
 
-  function playBig(){
-    bigSound.currentTime = 0;
+/* elements */
+const timerEl = document.getElementById("timer");
+const signalEl = document.getElementById("signalText");
+const statsEl = document.getElementById("statsText");
+
+let time = 30;
+let t;
+
+/* votes */
+let profitVotes = Number(localStorage.getItem("profit")) || 0;
+let lossVotes   = Number(localStorage.getItem("loss")) || 0;
+updateStats();
+
+/* timer */
+function startTimer(){
+  clearInterval(t);
+  time = 30;
+  timerEl.innerText = "⏳ " + time;
+  t = setInterval(()=>{
+    time--;
+    timerEl.innerText = "⏳ " + time;
+    if(time <= 0){
+      clearInterval(t);
+      timerEl.innerText = "⏳ Waiting…";
+    }
+  },1000);
+}
+
+/* signal */
+function setSignal(val){
+  startTimer();
+
+  if(val==="BIG"){
     bigSound.play();
+    signalEl.className="signal big";
+  }else{
+    smallSound.play();
+    signalEl.className="signal small";
   }
 
-  function playSmall(){
-    smallSound.currentTime = 0;
-    smallSound.play();
-  }
+  if(navigator.vibrate) navigator.vibrate(200);
+  signalEl.innerText = val + " آیا";
+}
+
+/* vote */
+function vote(type){
+  if(type==="profit") profitVotes++;
+  else lossVotes++;
+
+  localStorage.setItem("profit",profitVotes);
+  localStorage.setItem("loss",lossVotes);
+
+  updateStats();
+}
+
+/* update percentage */
+function updateStats(){
+  const total = profitVotes + lossVotes;
+  let p = total ? Math.round((profitVotes/total)*100) : 0;
+  let l = total ? 100 - p : 0;
+
+  statsEl.innerHTML = `
+    Profit: ${p}% | Loss: ${l}% <br>
+    Total Votes: ${total}
+  `;
+}
 </script>
 
 </body>
