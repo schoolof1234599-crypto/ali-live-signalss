@@ -2,55 +2,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ali Live Signals</title>
+<title>Live Trading Signal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{
-  background:linear-gradient(135deg,#052e16,#022c22);
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   color:white;
-  font-family:Arial;
   text-align:center;
-}
-.card{
-  margin:40px auto;
-  padding:20px;
-  width:90%;
-  max-width:350px;
-  background:#020617;
-  border-radius:15px;
-  box-shadow:0 0 20px #22c55e;
+  font-family:Arial;
 }
 .signal{
-  font-size:32px;
-  margin:10px 0;
+  font-size:40px;
+  margin-top:50px;
+  padding:30px;
+  border-radius:15px;
 }
-button{
-  padding:12px 20px;
-  margin:8px;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-}
-.profit{background:#22c55e;}
-.loss{background:#ef4444;}
+.big{background:#00c853}
+.small{background:#d50000}
 </style>
 </head>
 
 <body>
 
-<div class="card">
-  <h2>📢 LIVE SIGNAL</h2>
-  <div>🔢 #<span id="num">--</span></div>
-  <div class="signal" id="size">--</div>
-  <div>🎨 <span id="color">--</span></div>
-  <div>⏱️ <span id="time">--</span></div>
+<h1>📡 LIVE SIGNAL</h1>
 
-  <button class="profit" onclick="vote('profit')">👍 PROFIT</button>
-  <button class="loss" onclick="vote('loss')">👎 LOSS</button>
-
-  <p>🔥 Hacks: Coming Soon</p>
-</div>
+<div id="signalBox" class="signal">Waiting...</div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -61,19 +37,19 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-firebase.database().ref("signal").on("value", snap=>{
-  let s = snap.val();
-  if(!s) return;
-  num.innerText = s.number;
-  size.innerText = s.size;
-  color.innerText = s.color;
-  time.innerText = s.time;
-});
+firebase.database().ref("liveSignal").on("value", function(snapshot){
+  var data = snapshot.val();
+  if(!data) return;
 
-function vote(type){
-  firebase.database().ref("votes/"+type).transaction(v=> (v||0)+1);
-  alert("Thanks 😊");
-}
+  var box = document.getElementById("signalBox");
+  box.innerText = data.signal;
+
+  if(data.signal === "BIG"){
+    box.className = "signal big";
+  }else{
+    box.className = "signal small";
+  }
+});
 </script>
 
 </body>
