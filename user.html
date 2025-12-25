@@ -2,52 +2,87 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Live Trading Signal</title>
+<title>Ali Signal – Live</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
+  margin:0;
+  font-family:Arial;
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   color:white;
   text-align:center;
-  font-family:Arial;
 }
-.signal{
-  font-size:40px;
-  margin-top:50px;
-  padding:30px;
+.box{
+  margin:40px auto;
+  width:90%;
+  max-width:350px;
+  background:#000;
   border-radius:15px;
+  padding:20px;
+  box-shadow:0 0 20px cyan;
 }
-.big{background:#00c853}
-.small{background:#d50000}
+h2{margin-bottom:20px}
+.item{
+  background:#111;
+  margin:10px 0;
+  padding:12px;
+  border-radius:10px;
+  font-size:18px;
+}
+.big{color:#00ff00}
+.small{color:#ff4444}
 </style>
 </head>
 
 <body>
 
-<h1>📡 LIVE SIGNAL</h1>
+<div class="box">
+  <h2>📡 LIVE SIGNAL</h2>
 
-<div id="signalBox" class="signal">Waiting...</div>
+  <div class="item">📦 Size: 
+    <span id="size">---</span>
+  </div>
 
+  <div class="item">🎨 Color: 
+    <span id="color">---</span>
+  </div>
+
+  <div class="item">🔢 Number: 
+    <span id="number">---</span>
+  </div>
+
+  <div class="item">⏰ Time: 
+    <span id="time">---</span>
+  </div>
+</div>
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
 var firebaseConfig = {
+  apiKey: "DUMMY",
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
 };
 firebase.initializeApp(firebaseConfig);
 
-firebase.database().ref("liveSignal").on("value", function(snapshot){
-  var data = snapshot.val();
-  if(!data) return;
+var ref = firebase.database().ref("signal");
 
-  var box = document.getElementById("signalBox");
-  box.innerText = data.signal;
+ref.on("value", function(snapshot){
+  var d = snapshot.val();
+  if(!d) return;
 
-  if(data.signal === "BIG"){
-    box.className = "signal big";
+  document.getElementById("size").innerText = d.size;
+  document.getElementById("color").innerText = d.color;
+  document.getElementById("number").innerText = d.number;
+  document.getElementById("time").innerText = d.time;
+
+  if(d.size=="BIG"){
+    document.getElementById("size").className="big";
   }else{
-    box.className = "signal small";
+    document.getElementById("size").className="small";
   }
 });
 </script>
