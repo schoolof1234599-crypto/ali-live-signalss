@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ali Live Signals</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  background:linear-gradient(135deg,#052e16,#022c22);
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+.card{
+  margin:40px auto;
+  padding:20px;
+  width:90%;
+  max-width:350px;
+  background:#020617;
+  border-radius:15px;
+  box-shadow:0 0 20px #22c55e;
+}
+.signal{
+  font-size:32px;
+  margin:10px 0;
+}
+button{
+  padding:12px 20px;
+  margin:8px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+}
+.profit{background:#22c55e;}
+.loss{background:#ef4444;}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>📢 LIVE SIGNAL</h2>
+  <div>🔢 #<span id="num">--</span></div>
+  <div class="signal" id="size">--</div>
+  <div>🎨 <span id="color">--</span></div>
+  <div>⏱️ <span id="time">--</span></div>
+
+  <button class="profit" onclick="vote('profit')">👍 PROFIT</button>
+  <button class="loss" onclick="vote('loss')">👎 LOSS</button>
+
+  <p>🔥 Hacks: Coming Soon</p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+var firebaseConfig = {
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+};
+firebase.initializeApp(firebaseConfig);
+
+firebase.database().ref("signal").on("value", snap=>{
+  let s = snap.val();
+  if(!s) return;
+  num.innerText = s.number;
+  size.innerText = s.size;
+  color.innerText = s.color;
+  time.innerText = s.time;
+});
+
+function vote(type){
+  firebase.database().ref("votes/"+type).transaction(v=> (v||0)+1);
+  alert("Thanks 😊");
+}
+</script>
+
+</body>
+</html>
