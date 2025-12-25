@@ -1,27 +1,104 @@
 <!DOCTYPE html>
 <html>
-<body style="background:black;color:white;text-align:center">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h2>ADMIN</h2>
-<input id="pin" placeholder="PIN"><br><br>
+<style>
+body{
+  background:#0b1220;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+.box{
+  margin-top:40px;
+}
+button{
+  padding:15px 25px;
+  font-size:18px;
+  margin:8px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+.big{background:#22c55e;}
+.small{background:#ef4444;}
+.green{background:#16a34a;}
+.red{background:#dc2626;}
+.violet{background:#7c3aed;}
+input,select{
+  padding:10px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+}
+</style>
+</head>
 
-<button onclick="send('BIG')">BIG</button>
-<button onclick="send('SMALL')">SMALL</button>
+<body>
+
+<h2>🔐 Admin Panel</h2>
+
+<input type="password" id="pin" placeholder="Enter PIN"><br>
+
+<select id="time">
+  <option value="12:30">12:30 Session</option>
+  <option value="2:00">2:00 Session</option>
+  <option value="4:00">4:00 Session</option>
+</select>
+
+<div class="box">
+  <button class="big" onclick="send('BIG')">BIG</button>
+  <button class="small" onclick="send('SMALL')">SMALL</button>
+</div>
+
+<div class="box">
+  <button class="green" onclick="setColor('GREEN')">GREEN</button>
+  <button class="red" onclick="setColor('RED')">RED</button>
+  <button class="violet" onclick="setColor('VIOLET')">VIOLET</button>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-firebase.initializeApp({
+var firebaseConfig = {
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-});
+};
+firebase.initializeApp(firebaseConfig);
 
-function send(v){
-  if(pin.value !== "1234"){
-    alert("غلط PIN");
+const ADMIN_PIN = "Asad11";
+let currentColor = "GREEN";
+
+function setColor(c){
+  currentColor = c;
+  alert("Color set: " + c);
+}
+
+function send(size){
+  if(pin.value !== ADMIN_PIN){
+    alert("Wrong PIN");
     return;
   }
-  firebase.database().ref("signal").set(v);
+
+  firebase.database().ref("counter").once("value", snap=>{
+    let n = snap.val() || 0;
+    n++;
+
+    firebase.database().ref().set({
+      counter: n,
+      signal:{
+        number: n,
+        size: size,
+        color: currentColor,
+        time: time.value
+      }
+    });
+
+    alert("Sent: #" + n + " " + size + " " + currentColor);
+  });
 }
 </script>
 
