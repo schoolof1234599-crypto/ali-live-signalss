@@ -1,72 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Operator Panel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-  <style>
-    body{
-      background:#020617;
-      color:white;
-      font-family:Arial;
-      text-align:center;
-      padding-top:50px;
-    }
-    button{
-      width:120px;
-      height:50px;
-      margin:10px;
-      font-size:20px;
-      border:none;
-      border-radius:10px;
-      cursor:pointer;
-    }
-    .big{background:green;color:white}
-    .small{background:red;color:white}
-  </style>
+<meta charset="UTF-8">
+<title>Ali Trading Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  background:#0f172a;color:white;font-family:Arial;
+  display:flex;align-items:center;justify-content:center;height:100vh;
+}
+.box{
+  background:#020617;padding:25px;border-radius:15px;
+  width:90%;max-width:320px;text-align:center;box-shadow:0 0 20px cyan;
+}
+input,button{
+  width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none;
+}
+button{background:cyan;color:black;font-weight:bold}
+</style>
 </head>
-<h2 id="signal">Loading...</h2>
 <body>
 
-<h1>OPERATOR PANEL</h1>
+<div class="box">
+  <h2>🔐 Login / Signup</h2>
+  <input id="email" type="email" placeholder="Email">
+  <input id="pass" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <button onclick="signup()">Signup</button>
+</div>
 
-<button class="big" onclick="setSignal('BIG')">BIG</button>
-<button class="small" onclick="setSignal('SMALL')">SMALL</button>
-
+<script src="firebase.js"></script>
 <script>
-  var firebaseConfig = {
-    databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-  };
-  firebase.initializeApp(firebaseConfig);
-
-  var db = firebase.database();
-
-  function setSignal(value){
-    db.ref("signal").set({
-      current: value,
-      time: "1min"
-    });
-    alert("Signal Updated: " + value);
-  }
-</script>
-  <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<script>
-var firebaseConfig = {
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-};
-firebase.initializeApp(firebaseConfig);
-
-firebase.database().ref("signal/current").on("value", function(snapshot) {
-  document.getElementById("signal").innerText = snapshot.val();
-});
+function login(){
+  firebase.auth().signInWithEmailAndPassword(
+    email.value, pass.value
+  ).then(()=>{
+    localStorage.setItem("user", email.value);
+    window.location="home.html";
+  }).catch(e=>alert(e.message));
+}
+function signup(){
+  firebase.auth().createUserWithEmailAndPassword(
+    email.value, pass.value
+  ).then(()=>{
+    alert("Signup OK, now Login");
+  }).catch(e=>alert(e.message));
+}
 </script>
 
 </body>
