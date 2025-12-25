@@ -1,128 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ali Live Signals</title>
+<title>User Panel – Live Signals</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
+  min-height:100vh;
+  background:#020617;
   font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#020617,#020024,#020617);
-  color:white;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  color:#e5e7eb;
 }
-
-.box{
-  width:90%;
-  max-width:380px;
-  background:#020617;
-  border-radius:20px;
-  padding:30px;
+.app{
+  width:320px;
+  background:#0b1220;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 0 25px #22d3ee;
   text-align:center;
-  box-shadow:0 0 25px #22c55e;
 }
-
-h1{
-  margin-bottom:10px;
+h2{
+  margin:0 0 10px;
+  color:#22d3ee;
 }
-
+.timer{
+  font-size:28px;
+  margin:10px 0;
+  color:#facc15;
+}
 .signal{
-  font-size:48px;
-  margin:20px 0;
-  font-weight:bold;
+  font-size:32px;
+  margin:10px 0;
 }
-
-.waiting{ color:#94a3b8; }
-.big{ color:#22c55e; }
-.small{ color:#ef4444; }
-
-.time{
-  opacity:0.8;
-  margin-bottom:20px;
-}
+.signal.big{color:#22c55e}
+.signal.small{color:#ef4444}
 
 button{
-  padding:12px 20px;
-  border:none;
-  border-radius:10px;
+  width:100%;
+  padding:14px;
+  margin:8px 0;
   font-size:18px;
-  margin:10px;
+  font-weight:bold;
+  border:none;
+  border-radius:12px;
   cursor:pointer;
 }
+.bigBtn{background:#22c55e;color:#022c22}
+.smallBtn{background:#ef4444;color:#450a0a}
 
-.profit{ background:#22c55e; color:black; }
-.loss{ background:#ef4444; color:white; }
+.history{
+  text-align:left;
+  margin-top:12px;
+  font-size:14px;
+}
+.history div{
+  padding:4px 0;
+  border-bottom:1px dashed #334155;
+}
+.footer{
+  margin-top:10px;
+  font-size:12px;
+  color:#94a3b8;
+}
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h1>📡 LIVE SIGNAL</h1>
+<div class="app">
+  <h2>📡 Live Signal</h2>
 
-  <div id="signal" class="signal waiting">WAITING...</div>
-  <div id="time" class="time">⏱ Time: --</div>
+  <div class="timer" id="timer">⏳ 30</div>
 
-  <div>
-    <button class="profit" onclick="vote('profit')">✅ PROFIT</button>
-    <button class="loss" onclick="vote('loss')">❌ LOSS</button>
+  <div class="signal" id="signalText">WAITING…</div>
+
+  <button class="bigBtn" onclick="setSignal('BIG')">BIG 🔊</button>
+  <button class="smallBtn" onclick="setSignal('SMALL')">SMALL 🔊</button>
+
+  <div class="history">
+    <b>📜 History</b>
+    <div id="historyBox"></div>
+  </div>
+
+  <div class="footer">
+    Urdu + English • App Style 📱
   </div>
 </div>
 
-<!-- Sounds -->
-<audio id="bigSound" src="big.mp3"></audio>
-<audio id="smallSound" src="small.mp3"></audio>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 <script>
-var firebaseConfig = {
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-};
-firebase.initializeApp(firebaseConfig);
+/* sounds */
+const bigSound = new Audio("big.mp3");
+const smallSound = new Audio("small.mp3");
 
-const signalBox = document.getElementById("signal");
-const timeBox   = document.getElementById("time");
-const bigSound  = document.getElementById("bigSound");
-const smallSound= document.getElementById("smallSound");
+/* elements */
+const timerEl = document.getElementById("timer");
+const signalEl = document.getElementById("signalText");
+const historyBox = document.getElementById("historyBox");
 
-firebase.database().ref("signal").on("value", snap=>{
-  if(!snap.exists()) return;
+let time = 30;
+let t;
+let history = [];
 
-  const data = snap.val();
+/* countdown */
+function startTimer(){
+  clearInterval(t);
+  time = 30;
+  timerEl.innerText = "⏳ " + time;
+  t = setInterval(()=>{
+    time--;
+    timerEl.innerText = "⏳ " + time;
+    if(time <= 0){
+      clearInterval(t);
+      timerEl.innerText = "⏳ Waiting…";
+    }
+  },1000);
+}
 
-  timeBox.innerText = "⏱ Time: " + data.time;
+/* set signal */
+function setSignal(val){
+  startTimer();
 
-  if(data.size === "BIG"){
-    signalBox.innerText = "BIG";
-    signalBox.className = "signal big";
+  // sound
+  if(val === "BIG"){
+    bigSound.currentTime = 0;
     bigSound.play();
-  }
-  else if(data.size === "SMALL"){
-    signalBox.innerText = "SMALL";
-    signalBox.className = "signal small";
+    signalEl.className = "signal big";
+  }else{
+    smallSound.currentTime = 0;
     smallSound.play();
+    signalEl.className = "signal small";
   }
-  else{
-    signalBox.innerText = "WAITING...";
-    signalBox.className = "signal waiting";
-  }
-});
 
-function vote(type){
-  firebase.database().ref("votes/"+type).transaction(v=>(v||0)+1);
+  // vibration
+  if(navigator.vibrate){
+    navigator.vibrate(200);
+  }
+
+  // text
+  signalEl.innerText = val + " آیا";
+
+  // history
+  history.unshift(val + " • " + new Date().toLocaleTimeString());
+  history = history.slice(0,5);
+  renderHistory();
+}
+
+/* render history */
+function renderHistory(){
+  historyBox.innerHTML = "";
+  history.forEach(h=>{
+    const d = document.createElement("div");
+    d.innerText = h;
+    historyBox.appendChild(d);
+  });
 }
 </script>
-  <audio id="smallSound">
-  <source src="small.mp3" type="audio/mpeg">
-  </audio>
 
 </body>
 </html>
