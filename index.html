@@ -1,148 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Ali Trading System</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body style="background:black;color:white;text-align:center">
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0b1220;
-  color:white;
-  text-align:center;
-}
-.box{
-  width:90%;
-  max-width:350px;
-  margin:60px auto;
-  padding:20px;
-  background:#111a2e;
-  border-radius:12px;
-  box-shadow:0 0 20px cyan;
-}
-input,select,button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:8px;
-  border:none;
-  font-size:16px;
-}
-button{
-  background:cyan;
-  font-weight:bold;
-}
-.big{background:green;color:white}
-.small{background:red;color:white}
-.hide{display:none}
-</style>
-</head>
+<h2>LIVE SIGNAL</h2>
+<h1 id="s">WAIT...</h1>
 
-<body>
-
-<!-- LOGIN / SIGNUP -->
-<div class="box" id="loginBox">
-  <h2>🔐 Login / Signup</h2>
-  <input id="email" type="email" placeholder="Email">
-  <input id="pass" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <button onclick="signup()">Signup</button>
-</div>
-
-<!-- USER PANEL -->
-<div class="box hide" id="userBox">
-  <h2>📡 Live Signal</h2>
-  <h1 id="signalText">WAIT...</h1>
-  <p id="timeText"></p>
-  <button onclick="logout()">Logout</button>
-</div>
-
-<!-- ADMIN PANEL -->
-<div class="box hide" id="adminBox">
-  <h2>🛠 Admin Panel</h2>
-  <input id="adminPass" type="password" placeholder="Admin PIN">
-  <select id="time">
-    <option>1 min</option>
-    <option>3 min</option>
-    <option>5 min</option>
-  </select>
-  <button class="big" onclick="sendSignal('BIG')">BIG</button>
-  <button class="small" onclick="sendSignal('SMALL')">SMALL</button>
-</div>
-
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-/* 🔥 FIREBASE CONFIG */
-var firebaseConfig = {
-  apiKey: "DUMMY",
-  authDomain: "alisignal.firebaseapp.com",
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com",
-  projectId: "alisignal",
-};
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp({
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+});
 
-/* 🔐 LOGIN */
-function login(){
-  firebase.auth().signInWithEmailAndPassword(
-    email.value, pass.value
-  ).then(()=>{
-    localStorage.setItem("user", email.value);
-    showUser();
-  }).catch(e=>alert(e.message));
-}
-
-/* 🆕 SIGNUP */
-function signup(){
-  firebase.auth().createUserWithEmailAndPassword(
-    email.value, pass.value
-  ).then(()=>alert("Signup OK, now Login"))
-  .catch(e=>alert(e.message));
-}
-
-/* 🚪 LOGOUT */
-function logout(){
-  localStorage.removeItem("user");
-  location.reload();
-}
-
-/* 👤 USER VIEW */
-function showUser(){
-  loginBox.classList.add("hide");
-  userBox.classList.remove("hide");
-
-  firebase.database().ref("signal").on("value",snap=>{
-    if(snap.exists()){
-      signalText.innerText = snap.val().current;
-      timeText.innerText = "⏱ " + snap.val().time;
-    }
-  });
-}
-
-/* 🛠 ADMIN */
-const ADMIN_PIN = "Asad11";
-
-function sendSignal(val){
-  if(adminPass.value !== ADMIN_PIN){
-    alert("Wrong Admin PIN");
-    return;
-  }
-  firebase.database().ref("signal").set({
-    current: val,
-    time: time.value
-  });
-  alert("Signal Sent: " + val);
-}
-
-/* 🔄 AUTO CHECK */
-if(localStorage.getItem("user")){
-  showUser();
-}
+firebase.database().ref("signal").on("value", function(snap){
+  document.getElementById("s").innerText = snap.val();
+});
 </script>
 
 </body>
