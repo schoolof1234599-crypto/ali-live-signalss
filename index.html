@@ -1,50 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
-<style>
-body{
- background:#020617;
- color:white;
- font-family:Segoe UI;
- display:flex;
- justify-content:center;
- align-items:center;
- height:100vh;
-}
-.box{
- background:#020617;
- padding:20px;
- width:90%;
- max-width:320px;
- border-radius:16px;
- box-shadow:0 0 15px #22c55e;
-}
-input,button{
- width:100%;
- padding:12px;
- margin-top:10px;
- border:none;
- border-radius:12px;
-}
-button{background:#22c55e;font-weight:bold}
-</style>
+  <meta charset="UTF-8">
+  <title>Operator Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <style>
+    body{
+      background:#020617;
+      color:white;
+      font-family:Arial;
+      text-align:center;
+      padding-top:50px;
+    }
+    button{
+      width:120px;
+      height:50px;
+      margin:10px;
+      font-size:20px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+    }
+    .big{background:green;color:white}
+    .small{background:red;color:white}
+  </style>
 </head>
+
 <body>
 
-<div class="box">
-<h3>🔐 Login</h3>
-<input placeholder="Username">
-<input type="password" placeholder="Password">
-<button onclick="login()">Login</button>
-</div>
+<h1>OPERATOR PANEL</h1>
+
+<button class="big" onclick="setSignal('BIG')">BIG</button>
+<button class="small" onclick="setSignal('SMALL')">SMALL</button>
 
 <script>
-function login(){
-  window.location = "home.html";
-}
+  var firebaseConfig = {
+    databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  var db = firebase.database();
+
+  function setSignal(value){
+    db.ref("signal").set({
+      current: value,
+      time: "1min"
+    });
+    alert("Signal Updated: " + value);
+  }
 </script>
 
 </body>
