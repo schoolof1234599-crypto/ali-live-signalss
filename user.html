@@ -87,6 +87,21 @@ function closeBot(){
   document.getElementById("bot").style.display="none";
 }
 </script>
+<input id="botInput" placeholder="Ask bot..." />
+<button onclick="askBot()">Send</button>
+<p id="botReply"></p>
 
+<script>
+function askBot(){
+  let q = botInput.value.toLowerCase();
+  let reply = "Please ask about BIG or SMALL";
+
+  if(q.includes("big")) reply="BIG means higher number range (5-9)";
+  else if(q.includes("small")) reply="SMALL means lower number range (0-4)";
+  else if(q.includes("risk")) reply="Always manage risk. Trade safe.";
+
+  botReply.innerText = "🤖 "+reply;
+}
+</script>
 </body>
 </html>
