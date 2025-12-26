@@ -117,7 +117,41 @@ function askBot(){
     ⏸️ Pause
   </button>
 </div>
+<!-- 🎵 MUSIC PLAYER -->
+<div style="margin:20px;text-align:center">
+  <audio id="music" src="song1.mp3"></audio>
 
+  <button onclick="playMusic()" style="
+    padding:12px 25px;
+    border-radius:12px;
+    border:none;
+    background:#22c55e;
+    font-size:16px;
+    color:black;
+    margin-right:10px;">
+    ▶️ Play
+  </button>
+
+  <button onclick="pauseMusic()" style="
+    padding:12px 25px;
+    border-radius:12px;
+    border:none;
+    background:#ef4444;
+    font-size:16px;
+    color:white;">
+    ⏸️ Pause
+  </button>
+</div>
+
+<script>
+function playMusic(){
+  document.getElementById("music").play();
+}
+
+function pauseMusic(){
+  document.getElementById("music").pause();
+}
+  </script>
 <script>
 function playSong(){
   document.getElementById("player").play();
