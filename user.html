@@ -11,6 +11,36 @@ if(localStorage.getItem("login")!=="yes"){
   window.location.href="login.html";
 }
   </script>
+  <script>
+function hideAll(){
+  document.querySelectorAll('.section').forEach(s=>s.style.display="none");
+}
+
+function openWingO(){
+  hideAll();
+  document.getElementById("wingo").style.display="block";
+}
+
+function openBot(){
+  hideAll();
+  document.getElementById("bot").style.display="block";
+}
+
+function openProfit(){
+  hideAll();
+  document.getElementById("profit").style.display="block";
+}
+
+function openLoss(){
+  hideAll();
+  document.getElementById("loss").style.display="block";
+}
+
+function openChat(){
+  hideAll();
+  document.getElementById("chat").style.display="block";
+}
+</script>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -23,6 +53,11 @@ firebase.initializeApp({
 </head>
 
 <body>
+  <div id="wingo" class="section">🎯 WingO LIVE SIGNAL</div>
+<div id="bot" class="section">🤖 Bot Chat Area</div>
+<div id="profit" class="section">✅ Profit List</div>
+<div id="loss" class="section">❌ Loss List</div>
+<div id="chat" class="section">💬 Public Chat Room</div>
 
 <h1>📡 LIVE COLOR TRADING</h1>
 
