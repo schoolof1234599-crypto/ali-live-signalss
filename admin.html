@@ -1,43 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Admin Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+firebase.initializeApp({
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+});
+</script>
+
 <style>
-body{
-    background:#0b0f1a;
-    color:white;
-    font-family:Arial;
-}
-.box{
-    margin:20px;
-    padding:20px;
-    background:#11162a;
-    border-radius:15px;
-    box-shadow:0 0 20px #00ffcc;
-}
-input,textarea,button{
-    width:100%;
-    margin-top:10px;
-    padding:10px;
-    border:none;
-    border-radius:8px;
-}
-button{
-    background:#00ffcc;
-    font-weight:bold;
-}
+body{background:#000;color:white;text-align:center}
+button{padding:15px;margin:10px;font-size:18px}
 </style>
 </head>
 
 <body>
 
-<div class="box">
-<h2>👑 Ali Khanl</h2>
-<input placeholder="Signal Title">
-<textarea placeholder="Signal Details"></textarea>
-<button>Add Signal</button>
-</div>
+<h1>🔐 ADMIN PANEL</h1>
+
+<input id="number" placeholder="Number">
+<input id="time" placeholder="Time">
+
+<br>
+
+<button onclick="send('BIG','GREEN')">BIG</button>
+<button onclick="send('SMALL','RED')">SMALL</button>
+
+<h3>📊 STATS</h3>
+<p id="profit">Profit: 0</p>
+<p id="loss">Loss: 0</p>
+
+<script>
+function send(size,color){
+  firebase.database().ref("signal").set({
+    size, color,
+    number:number.value,
+    time:time.value
+  });
+}
+
+firebase.database().ref("votes").on("value", s=>{
+  let v=s.val()||{};
+  profit.innerText="Profit: "+(v.profit||0);
+  loss.innerText="Loss: "+(v.loss||0);
+});
+</script>
 
 </body>
 </html>
