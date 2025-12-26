@@ -1,68 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>Admin Panel</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
-  background:#0b0f1a;
-  color:white;
-  font-family:Arial;
-  text-align:center;
+    background:#0b0f1a;
+    color:white;
+    font-family:Arial;
 }
-.card{
-  margin-top:50px;
-  background:#111827;
-  padding:30px;
-  border-radius:15px;
-  box-shadow:0 0 20px #22c55e;
+.box{
+    margin:20px;
+    padding:20px;
+    background:#11162a;
+    border-radius:15px;
+    box-shadow:0 0 20px #00ffcc;
+}
+input,textarea,button{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:8px;
 }
 button{
-  width:140px;
-  height:60px;
-  font-size:20px;
-  border:none;
-  border-radius:12px;
-  margin:10px;
-  cursor:pointer;
+    background:#00ffcc;
+    font-weight:bold;
 }
-.big{background:#22c55e;}
-.small{background:#ef4444;}
 </style>
 </head>
 
 <body>
 
-<h1>ADMIN SIGNAL PANEL</h1>
-
-<div class="card">
-  <button class="big" onclick="sendSignal('BIG')">BIG</button>
-  <button class="small" onclick="sendSignal('SMALL')">SMALL</button>
+<div class="box">
+<h2>👑 Ali Khanl</h2>
+<input placeholder="Signal Title">
+<textarea placeholder="Signal Details"></textarea>
+<button>Add Signal</button>
 </div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<script>
-var firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-};
-firebase.initializeApp(firebaseConfig);
-var db = firebase.database();
-
-function sendSignal(signal){
-  db.ref("signal").set({
-    value: signal,
-    time: Date.now()
-  });
-  alert("Signal Sent: " + signal);
-}
-</script>
 
 </body>
 </html>
