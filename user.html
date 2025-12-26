@@ -2,78 +2,89 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Live Signals</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ali Live Signals</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  background:#0b0f1a;
-  color:white;
-  font-family:Arial;
-  text-align:center;
-}
-.box{
-  margin-top:60px;
-  padding:30px;
-  background:#111827;
-  border-radius:15px;
-  box-shadow:0 0 25px #3b82f6;
-}
-.signal{
-  font-size:50px;
-  margin-top:20px;
-}
-.wait{
-  color:#9ca3af;
-}
-</style>
+<link rel="stylesheet" href="style.css">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+firebase.initializeApp({
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+});
+</script>
 </head>
 
 <body>
 
-<h1>📡 LIVE TRADING SIGNAL</h1>
+<h1>📡 LIVE COLOR TRADING</h1>
 
-<div class="box">
-  <div id="status" class="wait">WAITING...</div>
-  <div id="signal" class="signal"></div>
+<button onclick="enableSound()" class="btn sound">🔊 Enable Sound</button>
+
+<!-- LIVE SIGNAL CARD -->
+<div class="card glow">
+  <h2 id="size">WAITING...</h2>
+  <p id="color">--</p>
+  <p id="number">--</p>
+  <p id="time">--</p>
 </div>
 
+<!-- AUDIO -->
 <audio id="bigSound" src="big.mp3"></audio>
 <audio id="smallSound" src="small.mp3"></audio>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<!-- DASHBOARD -->
+<h2>📊 DASHBOARD</h2>
+<div class="grid">
+  <button class="btn">🧠 Hack Mode<br><small>Coming Soon</small></button>
+  <button class="btn">🎯 Wingo</button>
+  <button class="btn">⏱ Section Timing</button>
+  <button class="btn" onclick="vote('profit')">✅ Profit</button>
+  <button class="btn" onclick="vote('loss')">❌ Loss</button>
+  <button class="btn" onclick="openBot()">🤖 Bot Chat</button>
+  <button class="btn" onclick="openChat()">💬 Public Chat</button>
+</div>
+
+<!-- BOT -->
+<div id="bot" class="popup">
+  <h3>🤖 Trading Bot</h3>
+  <p id="botText">Hello! Ask me about color trading.</p>
+  <button onclick="closeBot()">Close</button>
+</div>
 
 <script>
-var firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-};
-firebase.initializeApp(firebaseConfig);
-var db = firebase.database();
+let soundEnabled = false;
+function enableSound(){ soundEnabled = true; alert("Sound ON"); }
 
-db.ref("signal").on("value", function(snapshot){
-  if(snapshot.exists()){
-    var s = snapshot.val().value;
-    document.getElementById("status").innerHTML = "LIVE SIGNAL";
-    document.getElementById("signal").innerHTML = s;
+// LIVE SIGNAL
+firebase.database().ref("signal").on("value", s=>{
+  if(!s.exists()) return;
+  let d = s.val();
 
-    if(s === "BIG"){
-      document.getElementById("bigSound").play();
-      speak("Big Signal");
-    }else{
-      document.getElementById("smallSound").play();
-      speak("Small Signal");
-    }
+  size.innerText = d.size;
+  color.innerText = "🎨 " + d.color;
+  number.innerText = "🔢 " + d.number;
+  time.innerText = "⏰ " + d.time;
+
+  if(soundEnabled){
+    d.size === "BIG" ? bigSound.play() : smallSound.play();
   }
 });
 
-function speak(text){
-  let msg = new SpeechSynthesisUtterance(text);
-  msg.lang = "en-US";
-  speechSynthesis.speak(msg);
+// VOTE
+function vote(type){
+  firebase.database().ref("votes/"+type).transaction(n=>(n||0)+1);
+  alert("Thanks for voting!");
+}
+
+// BOT
+function openBot(){
+  document.getElementById("bot").style.display="block";
+}
+function closeBot(){
+  document.getElementById("bot").style.display="none";
 }
 </script>
 
