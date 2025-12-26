@@ -1,61 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Ali Login</title>
+<title>Login - Cloud Trading</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{
-  margin:0;
-  background:#020617;
-  color:white;
-  font-family:Arial;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+    background:#0b0f1a;
+    color:white;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 .box{
-  background:#0b1220;
-  padding:25px;
-  border-radius:16px;
-  width:90%;
-  max-width:320px;
-  text-align:center;
-  box-shadow:0 0 18px #38bdf8;
+    background:#11162a;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 20px #00ffcc;
+    width:300px;
 }
 input,button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
 }
 button{
-  background:#22c55e;
-  font-weight:bold;
+    background:#00ffcc;
+    font-weight:bold;
 }
 </style>
 </head>
-
 <body>
 
 <div class="box">
-  <h2>🔐 Login</h2>
-  <input id="name" placeholder="Your Name">
-  <button onclick="go()">Enter</button>
+<h2>Member Login 🔐</h2>
+<input type="email" placeholder="Email">
+<input type="password" placeholder="Password">
+<button>Login</button>
+<p style="margin-top:10px;font-size:13px;">Signals access members only</p>
 </div>
-
-<script>
-function go(){
-  let n=document.getElementById("name").value;
-  if(n==="") return alert("Enter name");
-  localStorage.setItem("user",n);
-  window.location="home.html";
-}
-</script>
 
 </body>
 </html>
