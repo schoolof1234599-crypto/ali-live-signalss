@@ -45,3 +45,11 @@ h1{margin-top:20px}
   padding:20px;
   border-radius:15px;
                                }
+
+.section{
+  display:none;
+  background:#0f172a;
+  margin:15px;
+  padding:15px;
+  border-radius:12px;
+}
