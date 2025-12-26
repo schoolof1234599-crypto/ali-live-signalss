@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -15,48 +16,41 @@ firebase.initializeApp({
 </script>
 
 <style>
-body{background:#000;color:#fff;text-align:center;font-family:Arial}
-button{padding:15px 30px;margin:10px;font-size:18px}
-input{padding:10px;width:80%;margin:5px}
+body{
+  background:black;
+  color:white;
+  text-align:center;
+  font-family:Arial;
+}
+button{
+  padding:20px;
+  margin:10px;
+  font-size:20px;
+}
 </style>
 </head>
 
 <body>
 
-<h2>🔐 ADMIN PANEL</h2>
+<h1>🔐 ADMIN PANEL</h1>
 
-<input id="msg" placeholder="Message to users">
-<br>
-<button onclick="sendMessage()">📩 Send Message</button>
+<button style="background:green;color:white"
+onclick="sendSignal('BIG')">
+BIG
+</button>
 
-<hr>
-
-<button style="background:green;color:white" onclick="sendSignal('BIG')">BIG</button>
-<button style="background:red;color:white" onclick="sendSignal('SMALL')">SMALL</button>
-
-<button onclick="clearSignal()">🧹 CLEAR</button>
+<button style="background:red;color:white"
+onclick="sendSignal('SMALL')">
+SMALL
+</button>
 
 <script>
-function sendSignal(val){
+function sendSignal(value){
   firebase.database().ref("signal").set({
-    current: val,
+    current: value,
     time: new Date().toLocaleTimeString()
   });
-  alert("Signal sent: "+val);
-}
-
-function clearSignal(){
-  firebase.database().ref("signal").remove();
-  alert("Signal cleared");
-}
-
-function sendMessage(){
-  let text = document.getElementById("msg").value;
-  firebase.database().ref("message").set({
-    text:text,
-    time:Date.now()
-  });
-  document.getElementById("msg").value="";
+  alert("Signal Sent: " + value);
 }
 </script>
 
