@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>User Dashboard</title>
@@ -8,96 +8,75 @@
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
   background:#0b1220;
   color:white;
+  font-family:Arial;
   text-align:center;
 }
-
 h1{
   background:#111827;
-  margin:0;
   padding:15px;
+  margin:0;
 }
-
 .menu{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:15px;
   padding:20px;
 }
-
 .btn{
   background:#1f2933;
   padding:20px;
   border-radius:12px;
-  font-size:18px;
   cursor:pointer;
 }
-
-.btn:hover{
-  background:#374151;
-}
-
 .section{
   display:none;
-  margin:20px;
-  padding:15px;
-  border-radius:12px;
   background:#111827;
+  margin:20px;
+  padding:20px;
+  border-radius:12px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>📊 USER DASHBOARD</h1>
+<h1>USER DASHBOARD</h1>
 
-<!-- BUTTONS -->
 <div class="menu">
-  <div class="btn" onclick="openSection('session')">⏰ Session Timing</div>
-  <div class="btn" onclick="openSection('wingo')">🎯 WingO Live</div>
-  <div class="btn" onclick="openSection('result')">📊 Profit / Loss</div>
-  <div class="btn" onclick="openSection('progress')">📈 Our Progress</div>
+  <div class="btn" onclick="show('session')">Session</div>
+  <div class="btn" onclick="show('wingo')">WingO</div>
+  <div class="btn" onclick="show('result')">Result</div>
+  <div class="btn" onclick="show('progress')">Progress</div>
 </div>
 
-<!-- SECTIONS -->
-
 <div id="session" class="section">
-  <h2>⏰ Session Timing</h2>
-  <p>1:00</p>
-  <p>2:00</p>
-  <p>3:00</p>
-  <p>4:00</p>
+  <h2>Session Timing</h2>
+  <p>1:00</p><p>2:00</p><p>3:00</p><p>4:00</p>
 </div>
 
 <div id="wingo" class="section">
-  <h2>🎯 LIVE SIGNAL</h2>
+  <h2>Live Signal</h2>
   <h1>WAITING...</h1>
 </div>
 
 <div id="result" class="section">
-  <h2>📊 Result</h2>
-  <button style="padding:15px 25px;font-size:18px;background:green;color:white;border:none;border-radius:10px;">
-    ✅ PROFIT
-  </button>
+  <h2>Profit / Loss</h2>
+  <button style="background:green;color:white;padding:15px;border:none;border-radius:10px">PROFIT</button>
   <br><br>
-  <button style="padding:15px 25px;font-size:18px;background:red;color:white;border:none;border-radius:10px;">
-    ❌ LOSS
-  </button>
+  <button style="background:red;color:white;padding:15px;border:none;border-radius:10px">LOSS</button>
 </div>
 
 <div id="progress" class="section">
-  <h2>📈 Our Progress</h2>
-  <p>This Week Profit: +120%</p>
-  <p>This Week Loss: -30%</p>
+  <h2>This Week</h2>
+  <p>Profit +120%</p>
+  <p>Loss -30%</p>
 </div>
 
 <script>
-function openSection(id){
-  document.querySelectorAll('.section').forEach(s=>{
-    s.style.display="none";
-  });
+function show(id){
+  document.querySelectorAll('.section').forEach(x=>x.style.display="none");
   document.getElementById(id).style.display="block";
 }
 </script>
