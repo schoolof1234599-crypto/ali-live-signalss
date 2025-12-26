@@ -53,3 +53,13 @@ h1{margin-top:20px}
   padding:15px;
   border-radius:12px;
 }
+<style>
+.menu button{
+  padding:10px;
+  margin:5px;
+}
+.section{
+  display:none;
+  margin-top:20px;
+}
+</style>
