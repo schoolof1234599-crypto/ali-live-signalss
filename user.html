@@ -14,8 +14,19 @@ firebase.initializeApp({
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
 });
 </script>
-
+<button onclick="sendSignal('BIG')" style="background:green;color:white;padding:15px">BIG</button>
+<button onclick="sendSignal('SMALL')" style="background:red;color:white;padding:15px">SMALL</button>
+  <script>
+function sendSignal(value){
+  firebase.database().ref("signal").set({
+    current: value,
+    time: new Date().toLocaleTimeString()
+  });
+  alert("Signal sent: " + value);
+}
+  </script>
 <style>
+
 body{
   background:#000;
   color:white;
