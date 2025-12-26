@@ -56,6 +56,20 @@ firebase.database().ref("votes").on("value", s=>{
   loss.innerText="Loss: "+(v.loss||0);
 });
 </script>
+  <button onclick="sendSignal('BIG')" style="padding:20px;background:green;color:white;font-size:20px">
+BIG
+</button>
+
+<button onclick="sendSignal('SMALL')" style="padding:20px;background:red;color:white;font-size:20px">
+SMALL
+</button>
+
+<script>
+function sendSignal(value){
+  localStorage.setItem("signal", value);
+  alert("Signal Sent: " + value);
+}
+</script>
 
 </body>
 </html>
