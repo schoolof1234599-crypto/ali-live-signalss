@@ -1,45 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>User Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<script>
-firebase.initializeApp({
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-});
-</script>
-<button onclick="sendSignal('BIG')" style="background:green;color:white;padding:15px">BIG</button>
-<button onclick="sendSignal('SMALL')" style="background:red;color:white;padding:15px">SMALL</button>
-  <script>
-function sendSignal(value){
-  firebase.database().ref("signal").set({
-    current: value,
-    time: new Date().toLocaleTimeString()
-  });
-  alert("Signal sent: " + value);
-}
-  </script>
 <style>
-
 body{
-  background:#000;
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0b1220;
   color:white;
   text-align:center;
-  font-family:Arial;
 }
-#signal{
-  font-size:50px;
-  margin-top:40px;
+
+h1{
+  background:#111827;
+  margin:0;
+  padding:15px;
+}
+
+.menu{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
   padding:20px;
 }
-.big{ background:green; }
-.small{ background:red; }
+
+.btn{
+  background:#1f2933;
+  padding:20px;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.btn:hover{
+  background:#374151;
+}
+
+.section{
+  display:none;
+  margin:20px;
+  padding:15px;
+  border-radius:12px;
+  background:#111827;
+}
 </style>
 </head>
 
@@ -47,29 +53,53 @@ body{
 
 <h1>📊 USER DASHBOARD</h1>
 
-<div id="signal">Waiting...</div>
+<!-- BUTTONS -->
+<div class="menu">
+  <div class="btn" onclick="openSection('session')">⏰ Session Timing</div>
+  <div class="btn" onclick="openSection('wingo')">🎯 WingO Live</div>
+  <div class="btn" onclick="openSection('result')">📊 Profit / Loss</div>
+  <div class="btn" onclick="openSection('progress')">📈 Our Progress</div>
+</div>
 
-<audio id="bigSound" src="big.mp3"></audio>
-<audio id="smallSound" src="small.mp3"></audio>
+<!-- SECTIONS -->
+
+<div id="session" class="section">
+  <h2>⏰ Session Timing</h2>
+  <p>1:00</p>
+  <p>2:00</p>
+  <p>3:00</p>
+  <p>4:00</p>
+</div>
+
+<div id="wingo" class="section">
+  <h2>🎯 LIVE SIGNAL</h2>
+  <h1>WAITING...</h1>
+</div>
+
+<div id="result" class="section">
+  <h2>📊 Result</h2>
+  <button style="padding:15px 25px;font-size:18px;background:green;color:white;border:none;border-radius:10px;">
+    ✅ PROFIT
+  </button>
+  <br><br>
+  <button style="padding:15px 25px;font-size:18px;background:red;color:white;border:none;border-radius:10px;">
+    ❌ LOSS
+  </button>
+</div>
+
+<div id="progress" class="section">
+  <h2>📈 Our Progress</h2>
+  <p>This Week Profit: +120%</p>
+  <p>This Week Loss: -30%</p>
+</div>
 
 <script>
-firebase.database().ref("signal").on("value", snap=>{
-  let data = snap.val();
-  if(!data) return;
-
-  let box = document.getElementById("signal");
-  box.innerText = data.current;
-
-  if(data.current === "BIG"){
-    box.className = "big";
-    document.getElementById("bigSound").play();
-  }
-
-  if(data.current === "SMALL"){
-    box.className = "small";
-    document.getElementById("smallSound").play();
-  }
-});
+function openSection(id){
+  document.querySelectorAll('.section').forEach(s=>{
+    s.style.display="none";
+  });
+  document.getElementById(id).style.display="block";
+}
 </script>
 
 </body>
