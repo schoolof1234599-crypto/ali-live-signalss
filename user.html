@@ -1,146 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur">
 <head>
 <meta charset="UTF-8">
-<title>User Panel</title>
+<title>Login | Cloud Trading Pro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
-  margin:0;
-  font-family:Arial, sans-serif;
   background:#0b1220;
-  color:#fff;
-}
-
-.nav{
+  color:white;
+  font-family:sans-serif;
   display:flex;
-  gap:8px;
-  padding:10px;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box{
   background:#111a2e;
-  position:sticky;
-  top:0;
-}
-
-.btn{
-  flex:1;
-  padding:10px;
-  background:#1f2a44;
-  border-radius:8px;
+  padding:25px;
+  border-radius:12px;
+  width:90%;
+  max-width:350px;
   text-align:center;
-  cursor:pointer;
 }
-
-.btn:hover{background:#2f3f66}
-
-.section{
-  display:none;
-  padding:15px;
-}
-
-.card{
-  background:#121c33;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:10px;
-}
-
-/* music */
-audio{
+input,button{
   width:100%;
-  margin-top:10px;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
+}
+button{
+  background:#00ff99;
+  font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔐 LOGIN CHECK -->
+<div class="box">
+  <h2>🔐 Login / Signup</h2>
+
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+
+  <button onclick="login()">Login / Signup</button>
+  <button onclick="nextPage()">Next ➡️</button>
+
+  <p id="msg"></p>
+</div>
+
 <script>
-if(localStorage.getItem("login")!=="yes"){
-  window.location.href="login.html";
+function login(){
+  if(user.value && pass.value){
+    localStorage.setItem("login","yes");
+    msg.innerText="✅ Login successful";
+  }else{
+    msg.innerText="❌ Fill all fields";
+  }
 }
-</script>
 
-<!-- 🔘 BUTTONS -->
-<div class="nav">
-  <div class="btn" onclick="openWingO()">🎯 WingO</div>
-  <div class="btn" onclick="openBot()">🤖 Bot</div>
-  <div class="btn" onclick="openProfit()">✅ Profit</div>
-  <div class="btn" onclick="openLoss()">❌ Loss</div>
-  <div class="btn" onclick="openChat()">💬 Chat</div>
-</div>
-
-<!-- 📦 SECTIONS -->
-<div id="wingo" class="section">
-  <div class="card">
-    <h3>🎯 WingO LIVE SIGNAL</h3>
-    <p>BIG / SMALL signals yahan show hongay</p>
-  </div>
-</div>
-
-<div id="bot" class="section">
-  <div class="card">
-    <h3>🤖 Bot Reply</h3>
-    <p>Hello! Ask me about BIG SMALL</p>
-  </div>
-</div>
-
-<div id="profit" class="section">
-  <div class="card">
-    <h3>✅ Profit List</h3>
-    <ul>
-      <li>+120 USDT</li>
-      <li>+80 USDT</li>
-    </ul>
-  </div>
-</div>
-
-<div id="loss" class="section">
-  <div class="card">
-    <h3>❌ Loss List</h3>
-    <ul>
-      <li>-20 USDT</li>
-    </ul>
-  </div>
-</div>
-
-<div id="chat" class="section">
-  <div class="card">
-    <h3>💬 Public Chat</h3>
-    <p>Real users messages yahan ayengay</p>
-  </div>
-
-  <!-- 🎵 MUSIC PLAYER -->
-  <div class="card">
-    <h3>🎵 Songs</h3>
-
-    <p>Song 1</p>
-    <audio controls>
-      <source src="song1.mp3" type="audio/mpeg">
-    </audio>
-
-    <p>Song 2</p>
-    <audio controls>
-      <source src="song2.mp3" type="audio/mpeg">
-    </audio>
-  </div>
-</div>
-
-<!-- ⚙️ JS -->
-<script>
-function hideAll(){
-  document.querySelectorAll('.section').forEach(s=>s.style.display="none");
+function nextPage(){
+  if(localStorage.getItem("login")==="yes"){
+    window.location.href="dashboard.html";
+  }else{
+    msg.innerText="❌ Pehle login karo";
+  }
 }
-function openWingO(){hideAll(); wingo.style.display="block";}
-function openBot(){hideAll(); bot.style.display="block";}
-function openProfit(){hideAll(); profit.style.display="block";}
-function openLoss(){hideAll(); loss.style.display="block";}
-function openChat(){hideAll(); chat.style.display="block";}
-
-// default open
-openWingO();
 </script>
 
 </body>
-    </html>
+</html>
