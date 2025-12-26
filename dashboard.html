@@ -40,6 +40,11 @@ button{
 function logout(){
   window.location.href="index.html";
 }
+  <script>
+if(localStorage.getItem("login")!=="yes"){
+  window.location.href="index.html";
+}
+</script>
 </script>
 </body>
 </html>
