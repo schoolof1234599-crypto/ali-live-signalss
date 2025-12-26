@@ -104,6 +104,24 @@ firebase.database().ref("votes").on("value", s=>{
   document.getElementById("loss").innerText="Loss: "+(v.loss||0);
 });
 </script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
+<script>
+firebase.initializeApp({
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+});
+
+function sendSignal(value){
+  firebase.database().ref("signal").set({
+    current: value,
+    time: Date.now()
+  });
+  alert("Signal sent: " + value);
+}
+</script>
+
+<button onclick="sendSignal('BIG')" style="padding:20px;background:green;color:white">BIG</button>
+<button onclick="sendSignal('SMALL')" style="padding:20px;background:red;color:white">SMALL</button>
 </body>
 </html>
