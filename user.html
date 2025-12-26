@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>User Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -15,43 +16,48 @@ firebase.initializeApp({
 </script>
 
 <style>
-body{background:#000;color:#fff;text-align:center;font-family:Arial}
-#signal{font-size:40px;padding:20px;margin:20px}
+body{
+  background:#000;
+  color:white;
+  text-align:center;
+  font-family:Arial;
+}
+#signal{
+  font-size:50px;
+  margin-top:40px;
+  padding:20px;
+}
+.big{ background:green; }
+.small{ background:red; }
 </style>
 </head>
 
 <body>
 
-<h2>📊 USER DASHBOARD</h2>
+<h1>📊 USER DASHBOARD</h1>
 
-<div id="signal">WAITING...</div>
-
-<h3>📩 Admin Message</h3>
-<p id="adminMsg">No message</p>
+<div id="signal">Waiting...</div>
 
 <audio id="bigSound" src="big.mp3"></audio>
 <audio id="smallSound" src="small.mp3"></audio>
 
 <script>
 firebase.database().ref("signal").on("value", snap=>{
-  let d=snap.val();
-  if(!d) return;
+  let data = snap.val();
+  if(!data) return;
 
-  document.getElementById("signal").innerText=d.current;
+  let box = document.getElementById("signal");
+  box.innerText = data.current;
 
-  if(d.current==="BIG"){
-    bigSound.play();
-    document.body.style.background="green";
+  if(data.current === "BIG"){
+    box.className = "big";
+    document.getElementById("bigSound").play();
   }
-  if(d.current==="SMALL"){
-    smallSound.play();
-    document.body.style.background="red";
-  }
-});
 
-firebase.database().ref("message").on("value", snap=>{
-  let d=snap.val();
-  if(d) document.getElementById("adminMsg").innerText=d.text;
+  if(data.current === "SMALL"){
+    box.className = "small";
+    document.getElementById("smallSound").play();
+  }
 });
 </script>
 
