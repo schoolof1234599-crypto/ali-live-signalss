@@ -42,14 +42,17 @@ button{padding:15px;margin:10px;font-size:18px}
 <p id="loss">Loss: 0</p>
 
 <script>
-function send(size,color){
-  firebase.database().ref("signal").set({
-    size, color,
-    number:number.value,
-    time:time.value
-  });
-}
+firebase.database().ref("signal").set({
+  current: val,
+  time: time.value,
+  at: Date.now()
+});
 
+firebase.database().ref("history").push({
+  current: val,
+  time: time.value,
+  at: Date.now()
+});
 firebase.database().ref("votes").on("value", s=>{
   let v=s.val()||{};
   profit.innerText="Profit: "+(v.profit||0);
@@ -71,5 +74,6 @@ function sendSignal(value){
 }
 </script>
 
+  
 </body>
 </html>
