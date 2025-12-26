@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -16,44 +15,26 @@ firebase.initializeApp({
 </script>
 
 <style>
-body{
-  background:#000;
-  color:white;
-  text-align:center;
-  font-family:Arial;
-}
-button,input{
-  padding:15px;
-  margin:10px;
-  font-size:18px;
-}
-.big{background:green;color:white}
-.small{background:red;color:white}
+body{background:#000;color:#fff;text-align:center;font-family:Arial}
+button{padding:15px 30px;margin:10px;font-size:18px}
+input{padding:10px;width:80%;margin:5px}
 </style>
 </head>
 
 <body>
 
-<script>
-let pin = prompt("Enter Admin PIN");
-if(pin !== "1234"){
-  alert("Wrong PIN");
-  document.body.innerHTML="";
-}
-</script>
+<h2>🔐 ADMIN PANEL</h2>
 
-<h1>🔐 ADMIN PANEL</h1>
-
-<h3>📩 Message to Users</h3>
-<input id="adminMsg" placeholder="Type message..." style="width:80%">
+<input id="msg" placeholder="Message to users">
 <br>
-<button onclick="sendMessage()">Send Message</button>
+<button onclick="sendMessage()">📩 Send Message</button>
 
 <hr>
 
-<h3>🎯 Send Signal</h3>
-<button class="big" onclick="sendSignal('BIG')">BIG</button>
-<button class="small" onclick="sendSignal('SMALL')">SMALL</button>
+<button style="background:green;color:white" onclick="sendSignal('BIG')">BIG</button>
+<button style="background:red;color:white" onclick="sendSignal('SMALL')">SMALL</button>
+
+<button onclick="clearSignal()">🧹 CLEAR</button>
 
 <script>
 function sendSignal(val){
@@ -61,16 +42,21 @@ function sendSignal(val){
     current: val,
     time: new Date().toLocaleTimeString()
   });
-  alert("Signal sent: " + val);
+  alert("Signal sent: "+val);
+}
+
+function clearSignal(){
+  firebase.database().ref("signal").remove();
+  alert("Signal cleared");
 }
 
 function sendMessage(){
-  let msg = document.getElementById("adminMsg").value;
+  let text = document.getElementById("msg").value;
   firebase.database().ref("message").set({
-    text: msg,
-    time: Date.now()
+    text:text,
+    time:Date.now()
   });
-  document.getElementById("adminMsg").value="";
+  document.getElementById("msg").value="";
 }
 </script>
 
