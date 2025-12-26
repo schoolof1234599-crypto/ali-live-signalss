@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>User Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -16,64 +15,43 @@ firebase.initializeApp({
 </script>
 
 <style>
-body{
-  background:#000;
-  color:white;
-  font-family:Arial;
-  text-align:center;
-}
-.section{
-  border:1px solid #333;
-  padding:15px;
-  margin:15px;
-}
+body{background:#000;color:#fff;text-align:center;font-family:Arial}
+#signal{font-size:40px;padding:20px;margin:20px}
 </style>
 </head>
 
 <body>
 
-<h1>📊 USER PANEL</h1>
+<h2>📊 USER DASHBOARD</h2>
 
-<div class="section">
-  <h3>📩 Admin Message</h3>
-  <p id="adminMessage">Waiting...</p>
-</div>
+<div id="signal">WAITING...</div>
 
-<div class="section">
-  <h2>🎯 LIVE SIGNAL</h2>
-  <h1 id="signalText">WAITING...</h1>
-  <p id="signalTime"></p>
-</div>
+<h3>📩 Admin Message</h3>
+<p id="adminMsg">No message</p>
 
 <audio id="bigSound" src="big.mp3"></audio>
 <audio id="smallSound" src="small.mp3"></audio>
 
 <script>
-// LIVE SIGNAL
 firebase.database().ref("signal").on("value", snap=>{
-  let d = snap.val();
-  if(!d){
-    signalText.innerText = "WAITING...";
-    return;
-  }
+  let d=snap.val();
+  if(!d) return;
 
-  signalText.innerText = d.current;
-  signalTime.innerText = d.time;
+  document.getElementById("signal").innerText=d.current;
 
-  if(d.current === "BIG"){
+  if(d.current==="BIG"){
     bigSound.play();
+    document.body.style.background="green";
   }
-  if(d.current === "SMALL"){
+  if(d.current==="SMALL"){
     smallSound.play();
+    document.body.style.background="red";
   }
 });
 
-// ADMIN MESSAGE
 firebase.database().ref("message").on("value", snap=>{
-  let d = snap.val();
-  if(d){
-    adminMessage.innerText = d.text;
-  }
+  let d=snap.val();
+  if(d) document.getElementById("adminMsg").innerText=d.text;
 });
 </script>
 
