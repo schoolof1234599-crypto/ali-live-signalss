@@ -42,6 +42,10 @@ button{
 </head>
 
 <body>
+  <div style="margin-top:20px;padding:15px;border-radius:12px;background:#020617;box-shadow:0 0 10px cyan">
+  <h3>📢 Admin Message</h3>
+  <p id="adminMessage">Waiting...</p>
+  </div>
   <audio id="bigSound" src="big.mp3"></audio>
 <audio id="smallSound" src="small.mp3"></audio>
   <div id="bot" class="section" style="display:none">
@@ -174,6 +178,14 @@ firebase.database().ref("signal").on("value", function(snapshot){
   else if(data.current === "SMALL"){
     document.getElementById("smallSound").play();
   }
+});
+  </script>
+  <script>
+firebase.database().ref("message").on("value", function(snapshot){
+  let data = snapshot.val();
+  if(!data) return;
+
+  document.getElementById("adminMessage").innerText = data.text;
 });
   </script>
 </body>
