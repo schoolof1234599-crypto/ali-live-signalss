@@ -1,192 +1,154 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Login | Cloud Trading Pro</title>
+<title>User Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+firebase.initializeApp({
+  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+});
+</script>
+
 <style>
-  <div id="home" class="section" style="display:block">
-  <h2>📊 Dashboard</h2>
-  <p>Welcome to Live Color Trading</p>
-</div>
 body{
-  background:#0b1220;
-  color:white;
-  font-family:sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  background:#111a2e;
-  padding:25px;
-  border-radius:12px;
-  width:90%;
-  max-width:350px;
-  text-align:center;
-}
-input,button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:none;
-  border-radius:8px;
+  background:#000;
+  color:#fff;
+  font-family:Arial;
+  margin:0;
+  padding:10px;
 }
 button{
-  background:#00ff99;
-  font-weight:bold;
+  padding:12px;
+  margin:5px;
+  font-size:16px;
+}
+.section{
+  display:none;
+  border:1px solid #333;
+  padding:10px;
+  margin-top:10px;
+}
+#botChat{
+  height:200px;
+  overflow:auto;
+  border:1px solid #444;
+  padding:5px;
 }
 </style>
+
+<script>
+// 🔐 LOGIN CHECK
+if(localStorage.getItem("login")!=="yes"){
+  window.location.href="index.html";
+}
+</script>
 </head>
 
 <body>
-  <div style="margin-top:20px;padding:15px;border-radius:12px;background:#020617;box-shadow:0 0 10px cyan">
-  <h3>📢 Admin Message</h3>
-  <p id="adminMessage">Waiting...</p>
-  </div>
-  <audio id="bigSound" src="big.mp3"></audio>
-<audio id="smallSound" src="small.mp3"></audio>
-  <div id="bot" class="section" style="display:none">
 
-  <h3>🤖 Trading Bot</h3>
+<h2>📊 USER DASHBOARD</h2>
 
-  <div id="botChat" style="
-    height:200px;
-    overflow:auto;
-    background:#020617;
-    padding:10px;
-    border-radius:10px;
-    margin-bottom:10px;
-  ">
-    <div>🤖 Hello! Ask me about BIG / SMALL</div>
-  </div>
+<!-- NAV BUTTONS -->
+<button onclick="openSection('wingo')">🎯 WingO</button>
+<button onclick="openSection('bot')">🤖 Bot</button>
+<button onclick="openSection('profit')">✅ Profit</button>
+<button onclick="openSection('loss')">❌ Loss</button>
 
-  <input id="botInput" placeholder="Type here..."
-    style="width:70%;padding:10px;border-radius:8px;border:none">
+<hr>
 
-  <button onclick="askBot()" style="
-    padding:10px 15px;
-    border-radius:8px;
-    background:#22c55e;
-    border:none;
-  ">Send</button>
+<!-- ADMIN MESSAGE -->
+<h3>📩 Admin Message</h3>
+<p id="adminMessage">No message</p>
 
-  </div>
-<h3>📜 Last Signals</h3>
-<ul id="history"></ul>
+<!-- SECTIONS -->
 
-<p id="countdown">⏳ Waiting...</p>
-<div class="box">
-  <h2>🔐 Login / Signup</h2>
-
-  <input id="user" placeholder="Username">
-  <input id="pass" type="password" placeholder="Password">
-
-  <button onclick="login()">Login / Signup</button>
-  <button onclick="nextPage()">Next ➡️</button>
-
-  <p id="msg"></p>
+<div id="wingo" class="section">
+  <h3>LIVE SIGNAL</h3>
+  <h1 id="signalText">Waiting...</h1>
 </div>
-<audio id="bigSound">
-  <source src="big.mp3" type="audio/mpeg">
-</audio>
 
-<audio id="smallSound">
-  <source src="small.mp3" type="audio/mpeg">
-</audio>
-<script>
-function login(){
-  if(user.value && pass.value){
-    localStorage.setItem("login","yes");
-    msg.innerText="✅ Login successful";
-  }else{
-    msg.innerText="❌ Fill all fields";
-  }
-}
+<div id="bot" class="section">
+  <h3>🤖 Bot Chat</h3>
+  <div id="botChat"></div><br>
+  <input id="botInput" placeholder="Ask BIG / SMALL / TIME" />
+  <button onclick="askBot()">Send</button>
+</div>
 
-function nextPage(){
-  if(localStorage.getItem("login")==="yes"){
-    window.location.href="dashboard.html";
-  }else{
-    msg.innerText="❌ Pehle login karo";
-  }
-}
-</script>
+<div id="profit" class="section">
+  <h3>✅ Weekly Profit</h3>
+  <p>Profit: +120%</p>
+</div>
+
+<div id="loss" class="section">
+  <h3>❌ Weekly Loss</h3>
+  <p>Loss: -30%</p>
+</div>
+
+<!-- AUDIO -->
+<audio id="bigSound" src="big.mp3"></audio>
+<audio id="smallSound" src="small.mp3"></audio>
+
+<!-- SCRIPTS -->
+
 <script>
+// SECTION CONTROL
 function openSection(id){
-  document.querySelectorAll('.section').forEach(s=>{
-    s.style.display="none";
-  });
+  document.querySelectorAll('.section').forEach(s=>s.style.display="none");
   document.getElementById(id).style.display="block";
 }
 </script>
-  <script>
+
+<script>
+// BOT
 function askBot(){
-  let q = document.getElementById("botInput").value.toLowerCase();
-  let chat = document.getElementById("botChat");
+  let q = botInput.value.toLowerCase();
+  if(q==="") return;
 
-  if(q === "") return;
+  botChat.innerHTML += "<div>👤 "+q+"</div>";
 
-  chat.innerHTML += "<div>👤 "+q+"</div>";
+  let reply="Ask about BIG or SMALL";
 
-  let reply = "Please ask about BIG, SMALL, TIME or PROFIT";
-
-  if(q.includes("big"))
-    reply = "BIG = High numbers (5-9). Risk medium.";
-  else if(q.includes("small"))
-    reply = "SMALL = Low numbers (0-4). Risk medium.";
-  else if(q.includes("time"))
-    reply = "Sessions: 12:30 | 2:00 | 3:00 | 4:00";
-  else if(q.includes("profit"))
-    reply = "Follow signal with discipline for profit 📈";
-  else if(q.includes("loss"))
-    reply = "Always use risk management ❗";
-  else if(q.includes("help"))
-    reply = "Use WingO for live signal. Ask BIG or SMALL.";
+  if(q.includes("big")) reply="BIG = 5-9 numbers";
+  else if(q.includes("small")) reply="SMALL = 0-4 numbers";
+  else if(q.includes("time")) reply="12:30 | 2:00 | 3:00 | 4:00";
+  else if(q.includes("profit")) reply="Follow signal strictly";
+  else if(q.includes("loss")) reply="Use risk management";
 
   setTimeout(()=>{
-    chat.innerHTML += "<div>🤖 "+reply+"</div>";
-    chat.scrollTop = chat.scrollHeight;
-  },500);
+    botChat.innerHTML += "<div>🤖 "+reply+"</div>";
+    botChat.scrollTop = botChat.scrollHeight;
+  },400);
 
-  document.getElementById("botInput").value="";
-}
-    <script>
-function playBig(){
-  document.getElementById("bigSound").play();
-}
-
-function playSmall(){
-  document.getElementById("smallSound").play();
+  botInput.value="";
 }
 </script>
-  </script>
-  <script>
-firebase.database().ref("signal").on("value", function(snapshot){
-  let data = snapshot.val();
-  if(!data) return;
 
-  // signal text show
-  document.getElementById("signalText").innerText = data.current;
+<script>
+// 🔴 LIVE SIGNAL + SOUND
+firebase.database().ref("signal").on("value", snap=>{
+  let d = snap.val();
+  if(!d) return;
 
-  // AUTO SOUND
-  if(data.current === "BIG"){
-    document.getElementById("bigSound").play();
-  }
-  else if(data.current === "SMALL"){
-    document.getElementById("smallSound").play();
-  }
+  signalText.innerText = d.current;
+
+  if(d.current==="BIG") bigSound.play();
+  if(d.current==="SMALL") smallSound.play();
 });
-  </script>
-  <script>
-firebase.database().ref("message").on("value", function(snapshot){
-  let data = snapshot.val();
-  if(!data) return;
+</script>
 
-  document.getElementById("adminMessage").innerText = data.text;
+<script>
+// 📩 ADMIN MESSAGE
+firebase.database().ref("message").on("value", snap=>{
+  let d=snap.val();
+  if(d) adminMessage.innerText=d.text;
 });
-  </script>
+</script>
+
 </body>
 </html>
