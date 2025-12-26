@@ -2,122 +2,159 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard | Cloud Trading Pro</title>
+<title>Live Color Trading Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://s3.tradingview.com/tv.js"></script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-onAuthStateChanged(auth, user => {
-  if(!user){
-    window.location = "login.html";
-  }
-});
-</script>
 <style>
 body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#0b0f1a;
-    color:#fff;
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#020617;
+  color:white;
 }
+
+/* HEADER */
 header{
-    padding:15px;
-    text-align:center;
-    background:#11162a;
-    box-shadow:0 0 15px #00ffcc;
+  text-align:center;
+  padding:20px;
+  font-size:22px;
+  font-weight:bold;
 }
-.menu{
-    display:flex;
-    justify-content:space-around;
-    background:#0e1325;
-    padding:10px;
+
+/* BUTTONS */
+.dashboard{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  padding:15px;
 }
-.menu a{
-    color:#00ffcc;
-    text-decoration:none;
-    font-weight:bold;
+
+.btn{
+  background:#0f172a;
+  padding:15px;
+  border-radius:12px;
+  text-align:center;
+  cursor:pointer;
+  font-size:16px;
 }
-.card{
-    margin:15px;
-    padding:20px;
-    background:#11162a;
-    border-radius:15px;
-    box-shadow:0 0 15px rgba(0,255,204,0.3);
+
+.btn:hover{
+  background:#1e293b;
 }
-.signal{
-    padding:10px;
-    margin-top:10px;
-    background:#0e1325;
-    border-left:5px solid #00ffcc;
+
+/* SECTIONS */
+.section{
+  display:none;
+  background:#020617;
+  margin:15px;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #22c55e;
+}
+
+input, button{
+  padding:10px;
+  border-radius:8px;
+  border:none;
+}
+
+button{
+  background:#22c55e;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:0.8;
 }
 </style>
 </head>
 
 <body>
-  <script>
-if(localStorage.getItem("login")!=="yes"){
-  window.location.href="index.html";
-}
-  </script>
 
-<header>
-    <h2>📊 Member Dashboard</h2>
-    <p>Welcome to Cloud Trading Pro</p>
-</header>
-
-<div class="menu">
-    <a href="#">Signals</a>
-    <a href="#">Charts</a>
-    <a href="#">Chat</a>
-    <a href="index.html">Logout</a>
-</div>
-
-<div class="card">
-    <h3>🔥 Live Trading Signals</h3>
-
-    <div class="signal">
-        <b>BUY EUR/USD</b><br>
-        Entry: 1.0840<br>
-        TP: 1.0880<br>
-        SL: 1.0810
-    </div>
-
-    <div class="signal">
-        <b>SELL BTC/USDT</b><br>
-        Entry: 42000<br>
-        TP: 41000<br>
-        SL: 43000
-    </div>
-</div>
-
-<div class="card">
-    <h3>📈 Live Chart</h3>
-    <div id="chart" style="height:400px;"></div>
-</div>
-
+<!-- LOGIN CHECK -->
 <script>
-new TradingView.widget({
-    "container_id": "chart",
-    "width": "100%",
-    "height": 400,
-    "symbol": "FX:EURUSD",
-    "interval": "15",
-    "timezone": "Asia/Karachi",
-    "theme": "dark"
-});
+if(localStorage.getItem("login")!=="yes"){
+  window.location.href="login.html";
+}
+</script>
+
+<header>📡 LIVE COLOR TRADING</header>
+
+<!-- DASHBOARD BUTTONS -->
+<div class="dashboard">
+  <div class="btn">🧠 Hack Mode<br><small>Coming Soon</small></div>
+  <div class="btn" onclick="openWingO()">🎯 WingO</div>
+
+  <div class="btn" onclick="openTiming()">⏱ Section Timing</div>
+  <div class="btn" onclick="openProfit()">✅ Profit</div>
+
+  <div class="btn" onclick="openLoss()">❌ Loss</div>
+  <div class="btn" onclick="openBot()">🤖 Bot Chat</div>
+
+  <div class="btn" onclick="openChat()">💬 Public Chat</div>
+</div>
+
+<!-- SECTIONS -->
+
+<div id="wingo" class="section">
+  <h3>🎯 LIVE COLOR SIGNAL</h3>
+  <p><b>BIG</b> → GREEN</p>
+  <p>Live signal yahan show hoga</p>
+</div>
+
+<div id="timing" class="section">
+  <h3>⏱ Section Timing</h3>
+  <p>12:30</p>
+  <p>01:00</p>
+  <p>02:00</p>
+  <p>03:00</p>
+  <p>04:00</p>
+</div>
+
+<div id="profit" class="section">
+  <h3>✅ Weekly Profit</h3>
+  <p>Is week profit: +12,500 PKR</p>
+</div>
+
+<div id="loss" class="section">
+  <h3>❌ Weekly Loss</h3>
+  <p>Is week loss: -3,200 PKR</p>
+</div>
+
+<div id="bot" class="section">
+  <h3>🤖 Bot Chat</h3>
+  <input id="botInput" placeholder="Ask BIG or SMALL">
+  <button onclick="askBot()">Send</button>
+  <p id="botReply"></p>
+</div>
+
+<div id="chat" class="section">
+  <h3>💬 Public Chat</h3>
+  <p>Users yahan baat kar sakte hain</p>
+</div>
+
+<!-- SCRIPT -->
+<script>
+function hideAll(){
+  document.querySelectorAll('.section')
+  .forEach(s => s.style.display="none");
+}
+
+function openWingO(){ hideAll(); wingo.style.display="block"; }
+function openTiming(){ hideAll(); timing.style.display="block"; }
+function openProfit(){ hideAll(); profit.style.display="block"; }
+function openLoss(){ hideAll(); loss.style.display="block"; }
+function openBot(){ hideAll(); bot.style.display="block"; }
+function openChat(){ hideAll(); chat.style.display="block"; }
+
+function askBot(){
+  let q = botInput.value.toLowerCase();
+  let r = "BIG ya SMALL pocho";
+  if(q.includes("big")) r="BIG = 5–9";
+  if(q.includes("small")) r="SMALL = 0–4";
+  botReply.innerText="🤖 "+r;
+}
 </script>
 
 </body>
-  </html>
+                                  </html>
