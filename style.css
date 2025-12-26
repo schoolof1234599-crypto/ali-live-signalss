@@ -1,9 +1,47 @@
 body{
-    background-color:black;
-    color:white;
-    text-align:center;
+  background:#0b1220;
+  color:white;
+  font-family:Arial;
+  text-align:center;
 }
 
-h1{
-    color:cyan;
+h1{margin-top:20px}
+
+.card{
+  background:#111827;
+  margin:20px;
+  padding:20px;
+  border-radius:15px;
 }
+
+.glow{
+  box-shadow:0 0 20px #00ff99;
+}
+
+.btn{
+  padding:15px;
+  margin:10px;
+  border-radius:12px;
+  border:none;
+  background:#1f2933;
+  color:white;
+  font-size:16px;
+}
+
+.sound{background:#00ff99;color:black}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+}
+
+.popup{
+  display:none;
+  position:fixed;
+  bottom:20px;
+  left:10%;
+  width:80%;
+  background:#111;
+  padding:20px;
+  border-radius:15px;
+                               }
