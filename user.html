@@ -42,6 +42,8 @@ button{
 </head>
 
 <body>
+  <audio id="bigSound" src="big.mp3"></audio>
+<audio id="smallSound" src="small.mp3"></audio>
   <div id="bot" class="section" style="display:none">
 
   <h3>🤖 Trading Bot</h3>
@@ -156,6 +158,23 @@ function playSmall(){
   document.getElementById("smallSound").play();
 }
 </script>
+  </script>
+  <script>
+firebase.database().ref("signal").on("value", function(snapshot){
+  let data = snapshot.val();
+  if(!data) return;
+
+  // signal text show
+  document.getElementById("signalText").innerText = data.current;
+
+  // AUTO SOUND
+  if(data.current === "BIG"){
+    document.getElementById("bigSound").play();
+  }
+  else if(data.current === "SMALL"){
+    document.getElementById("smallSound").play();
+  }
+});
   </script>
 </body>
 </html>
