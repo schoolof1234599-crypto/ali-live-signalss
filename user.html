@@ -83,7 +83,13 @@ button{
 
   <p id="msg"></p>
 </div>
+<audio id="bigSound">
+  <source src="big.mp3" type="audio/mpeg">
+</audio>
 
+<audio id="smallSound">
+  <source src="small.mp3" type="audio/mpeg">
+</audio>
 <script>
 function login(){
   if(user.value && pass.value){
@@ -141,6 +147,15 @@ function askBot(){
 
   document.getElementById("botInput").value="";
 }
+    <script>
+function playBig(){
+  document.getElementById("bigSound").play();
+}
+
+function playSmall(){
+  document.getElementById("smallSound").play();
+}
+</script>
   </script>
 </body>
 </html>
