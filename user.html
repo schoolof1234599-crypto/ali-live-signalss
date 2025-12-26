@@ -1,205 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ali Live Signals</title>
+<title>User Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
-  <script>
-if(localStorage.getItem("login")!=="yes"){
-  window.location.href="login.html";
-}
-  </script>
-  <script>
-function hideAll(){
-  document.querySelectorAll('.section').forEach(s=>s.style.display="none");
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0b1220;
+  color:#fff;
 }
 
-function openWingO(){
-  hideAll();
-  document.getElementById("wingo").style.display="block";
+.nav{
+  display:flex;
+  gap:8px;
+  padding:10px;
+  background:#111a2e;
+  position:sticky;
+  top:0;
 }
 
-function openBot(){
-  hideAll();
-  document.getElementById("bot").style.display="block";
+.btn{
+  flex:1;
+  padding:10px;
+  background:#1f2a44;
+  border-radius:8px;
+  text-align:center;
+  cursor:pointer;
 }
 
-function openProfit(){
-  hideAll();
-  document.getElementById("profit").style.display="block";
+.btn:hover{background:#2f3f66}
+
+.section{
+  display:none;
+  padding:15px;
 }
 
-function openLoss(){
-  hideAll();
-  document.getElementById("loss").style.display="block";
+.card{
+  background:#121c33;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:10px;
 }
 
-function openChat(){
-  hideAll();
-  document.getElementById("chat").style.display="block";
+/* music */
+audio{
+  width:100%;
+  margin-top:10px;
 }
-</script>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-<script>
-firebase.initializeApp({
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-});
-</script>
+</style>
 </head>
 
 <body>
-  <div id="wingo" class="section">🎯 WingO LIVE SIGNAL</div>
-<div id="bot" class="section">🤖 Bot Chat Area</div>
-<div id="profit" class="section">✅ Profit List</div>
-<div id="loss" class="section">❌ Loss List</div>
-<div id="chat" class="section">💬 Public Chat Room</div>
 
-<h1>📡 LIVE COLOR TRADING</h1>
-
-<button onclick="enableSound()" class="btn sound">🔊 Enable Sound</button>
-
-<!-- LIVE SIGNAL CARD -->
-<div class="card glow">
-  <h2 id="size">WAITING...</h2>
-  <p id="color">--</p>
-  <p id="number">--</p>
-  <p id="time">--</p>
-</div>
-
-<!-- AUDIO -->
-<audio id="bigSound" src="big.mp3"></audio>
-<audio id="smallSound" src="small.mp3"></audio>
-
-<!-- DASHBOARD -->
-<h2>📊 DASHBOARD</h2>
-<div class="grid">
-  <button class="btn">🧠 Hack Mode<br><small>Coming Soon</small></button>
-  <button class="btn">🎯 Wingo</button>
-  <button class="btn">⏱ Section Timing</button>
-  <button class="btn" onclick="vote('profit')">✅ Profit</button>
-  <button class="btn" onclick="vote('loss')">❌ Loss</button>
-  <button class="btn" onclick="openBot()">🤖 Bot Chat</button>
-  <button class="btn" onclick="openChat()">💬 Public Chat</button>
-</div>
-
-<!-- BOT -->
-<div id="bot" class="popup">
-  <h3>🤖 Trading Bot</h3>
-  <p id="botText">Hello! Ask me about color trading.</p>
-  <button onclick="closeBot()">Close</button>
-</div>
-
+<!-- 🔐 LOGIN CHECK -->
 <script>
-let soundEnabled = false;
-function enableSound(){ soundEnabled = true; alert("Sound ON"); }
-
-// LIVE SIGNAL
-firebase.database().ref("signal").on("value", s=>{
-  if(!s.exists()) return;
-  let d = s.val();
-
-  size.innerText = d.size;
-  color.innerText = "🎨 " + d.color;
-  number.innerText = "🔢 " + d.number;
-  time.innerText = "⏰ " + d.time;
-
-  if(soundEnabled){
-    d.size === "BIG" ? bigSound.play() : smallSound.play();
-  }
-});
-
-// VOTE
-function vote(type){
-  firebase.database().ref("votes/"+type).transaction(n=>(n||0)+1);
-  alert("Thanks for voting!");
-}
-
-// BOT
-function openBot(){
-  document.getElementById("bot").style.display="block";
-}
-function closeBot(){
-  document.getElementById("bot").style.display="none";
+if(localStorage.getItem("login")!=="yes"){
+  window.location.href="login.html";
 }
 </script>
-<input id="botInput" placeholder="Ask bot..." />
-<button onclick="askBot()">Send</button>
-<p id="botReply"></p>
 
+<!-- 🔘 BUTTONS -->
+<div class="nav">
+  <div class="btn" onclick="openWingO()">🎯 WingO</div>
+  <div class="btn" onclick="openBot()">🤖 Bot</div>
+  <div class="btn" onclick="openProfit()">✅ Profit</div>
+  <div class="btn" onclick="openLoss()">❌ Loss</div>
+  <div class="btn" onclick="openChat()">💬 Chat</div>
+</div>
+
+<!-- 📦 SECTIONS -->
+<div id="wingo" class="section">
+  <div class="card">
+    <h3>🎯 WingO LIVE SIGNAL</h3>
+    <p>BIG / SMALL signals yahan show hongay</p>
+  </div>
+</div>
+
+<div id="bot" class="section">
+  <div class="card">
+    <h3>🤖 Bot Reply</h3>
+    <p>Hello! Ask me about BIG SMALL</p>
+  </div>
+</div>
+
+<div id="profit" class="section">
+  <div class="card">
+    <h3>✅ Profit List</h3>
+    <ul>
+      <li>+120 USDT</li>
+      <li>+80 USDT</li>
+    </ul>
+  </div>
+</div>
+
+<div id="loss" class="section">
+  <div class="card">
+    <h3>❌ Loss List</h3>
+    <ul>
+      <li>-20 USDT</li>
+    </ul>
+  </div>
+</div>
+
+<div id="chat" class="section">
+  <div class="card">
+    <h3>💬 Public Chat</h3>
+    <p>Real users messages yahan ayengay</p>
+  </div>
+
+  <!-- 🎵 MUSIC PLAYER -->
+  <div class="card">
+    <h3>🎵 Songs</h3>
+
+    <p>Song 1</p>
+    <audio controls>
+      <source src="song1.mp3" type="audio/mpeg">
+    </audio>
+
+    <p>Song 2</p>
+    <audio controls>
+      <source src="song2.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+</div>
+
+<!-- ⚙️ JS -->
 <script>
-function askBot(){
-  let q = botInput.value.toLowerCase();
-  let reply = "Please ask about BIG or SMALL";
-
-  if(q.includes("big")) reply="BIG means higher number range (5-9)";
-  else if(q.includes("small")) reply="SMALL means lower number range (0-4)";
-  else if(q.includes("risk")) reply="Always manage risk. Trade safe.";
-
-  botReply.innerText = "🤖 "+reply;
+function hideAll(){
+  document.querySelectorAll('.section').forEach(s=>s.style.display="none");
 }
+function openWingO(){hideAll(); wingo.style.display="block";}
+function openBot(){hideAll(); bot.style.display="block";}
+function openProfit(){hideAll(); profit.style.display="block";}
+function openLoss(){hideAll(); loss.style.display="block";}
+function openChat(){hideAll(); chat.style.display="block";}
+
+// default open
+openWingO();
 </script>
-  <!-- 🎵 Music Player -->
-<div style="margin:20px;text-align:center">
-  <h3>🎶 Music Player</h3>
 
-  <audio id="player" src="song1.mp3"></audio>
-
-  <button onclick="playSong()" style="padding:10px 20px;font-size:16px">
-    ▶️ Play
-  </button>
-
-  <button onclick="pauseSong()" style="padding:10px 20px;font-size:16px">
-    ⏸️ Pause
-  </button>
-</div>
-<!-- 🎵 MUSIC PLAYER -->
-<div style="margin:20px;text-align:center">
-  <audio id="music" src="song1.mp3"></audio>
-
-  <button onclick="playMusic()" style="
-    padding:12px 25px;
-    border-radius:12px;
-    border:none;
-    background:#22c55e;
-    font-size:16px;
-    color:black;
-    margin-right:10px;">
-    ▶️ Play
-  </button>
-
-  <button onclick="pauseMusic()" style="
-    padding:12px 25px;
-    border-radius:12px;
-    border:none;
-    background:#ef4444;
-    font-size:16px;
-    color:white;">
-    ⏸️ Pause
-  </button>
-</div>
-
-<script>
-function playMusic(){
-  document.getElementById("music").play();
-}
-
-function pauseMusic(){
-  document.getElementById("music").pause();
-}
-  </script>
-<script>
-function playSong(){
-  document.getElementById("player").play();
-}
-
-function pauseSong(){
-  document.getElementById("player").pause();
-}
-  </script>
 </body>
-</html>
+    </html>
