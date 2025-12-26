@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0;
+  background:#020617;
+  color:white;
+  font-family:Arial;
+  padding:20px;
+}
+.card{
+  background:#0f172a;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+button{
+  padding:10px 15px;
+  border:none;
+  border-radius:6px;
+  background:#ef4444;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+<h1>📊 Dashboard</h1>
+
+<div class="card">📈 Live Signal 1</div>
+<div class="card">📉 Live Signal 2</div>
+
+<button onclick="logout()">لاگ آؤٹ</button>
+
+<script>
+function logout(){
+  window.location.href="index.html";
+}
+</script>
+</body>
+</html>
