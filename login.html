@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login - Cloud Trading</title>
+<title>Login | Cloud Trading</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
@@ -36,12 +36,16 @@ button{
 <body>
 
 <div class="box">
-<h2>Member Login 🔐</h2>
-<input type="email" placeholder="Email">
-<input type="password" placeholder="Password">
-<button>Login</button>
-<p style="margin-top:10px;font-size:13px;">Signals access members only</p>
+<h2>🔐 Login / Signup</h2>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+<button onclick="signup()">Signup</button>
 </div>
+
+<!-- Firebase -->
+<script type="module" src="firebase.js"></script>
 
 </body>
 </html>
