@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Live Signals</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
+<style>
+body{
+  background:#0b0f1a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+.box{
+  margin-top:60px;
+  padding:30px;
+  background:#111827;
+  border-radius:15px;
+  box-shadow:0 0 25px #3b82f6;
+}
+.signal{
+  font-size:50px;
+  margin-top:20px;
+}
+.wait{
+  color:#9ca3af;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📡 LIVE TRADING SIGNAL</h1>
+
+<div class="box">
+  <div id="status" class="wait">WAITING...</div>
+  <div id="signal" class="signal"></div>
+</div>
+
+<audio id="bigSound" src="big.mp3"></audio>
+<audio id="smallSound" src="small.mp3"></audio>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+var firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
+
+db.ref("signal").on("value", function(snapshot){
+  if(snapshot.exists()){
+    var s = snapshot.val().value;
+    document.getElementById("status").innerHTML = "LIVE SIGNAL";
+    document.getElementById("signal").innerHTML = s;
+
+    if(s === "BIG"){
+      document.getElementById("bigSound").play();
+      speak("Big Signal");
+    }else{
+      document.getElementById("smallSound").play();
+      speak("Small Signal");
+    }
+  }
+});
+
+function speak(text){
+  let msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-US";
+  speechSynthesis.speak(msg);
+}
+</script>
+
+</body>
+</html>
