@@ -103,5 +103,29 @@ function askBot(){
   botReply.innerText = "🤖 "+reply;
 }
 </script>
+  <!-- 🎵 Music Player -->
+<div style="margin:20px;text-align:center">
+  <h3>🎶 Music Player</h3>
+
+  <audio id="player" src="song1.mp3"></audio>
+
+  <button onclick="playSong()" style="padding:10px 20px;font-size:16px">
+    ▶️ Play
+  </button>
+
+  <button onclick="pauseSong()" style="padding:10px 20px;font-size:16px">
+    ⏸️ Pause
+  </button>
+</div>
+
+<script>
+function playSong(){
+  document.getElementById("player").play();
+}
+
+function pauseSong(){
+  document.getElementById("player").pause();
+}
+  </script>
 </body>
 </html>
