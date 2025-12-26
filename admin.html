@@ -31,7 +31,15 @@ button{padding:15px;margin:10px;font-size:18px}
 
 <input id="number" placeholder="Number">
 <input id="time" placeholder="Time">
+<br><br>
 
+<button onclick="pauseSignal()" style="background:#facc15;color:black">
+⏸️ PAUSE
+</button>
+
+<button onclick="clearSignal()" style="background:#94a3b8;color:black">
+🧹 CLEAR
+  </button>
 <br>
 
 <button onclick="send('BIG','GREEN')">BIG</button>
@@ -68,6 +76,19 @@ SMALL
 </button>
 
 <script>
+  function pauseSignal(){
+  firebase.database().ref("signal").set({
+    current: "PAUSED",
+    time: "---",
+    at: Date.now()
+  });
+  alert("Signal Paused");
+}
+
+function clearSignal(){
+  firebase.database().ref("signal").remove();
+  alert("Signal Cleared");
+  }
 function sendSignal(value){
   localStorage.setItem("signal", value);
   alert("Signal Sent: " + value);
