@@ -3,61 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <style>
 body{
-  background:#0b1220;
+  background:#0b0f1a;
   color:white;
   font-family:Arial;
   text-align:center;
 }
-.box{
-  margin-top:40px;
+.card{
+  margin-top:50px;
+  background:#111827;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 0 20px #22c55e;
 }
 button{
-  padding:15px 25px;
-  font-size:18px;
-  margin:8px;
+  width:140px;
+  height:60px;
+  font-size:20px;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
+  margin:10px;
   cursor:pointer;
 }
 .big{background:#22c55e;}
 .small{background:#ef4444;}
-.green{background:#16a34a;}
-.red{background:#dc2626;}
-.violet{background:#7c3aed;}
-input,select{
-  padding:10px;
-  font-size:16px;
-  border-radius:8px;
-  border:none;
-}
 </style>
 </head>
 
 <body>
 
-<h2>🔐 Admin Panel</h2>
+<h1>ADMIN SIGNAL PANEL</h1>
 
-<input type="password" id="pin" placeholder="Enter PIN"><br>
-
-<select id="time">
-  <option value="12:30">12:30 Session</option>
-  <option value="2:00">2:00 Session</option>
-  <option value="4:00">4:00 Session</option>
-</select>
-
-<div class="box">
-  <button class="big" onclick="send('BIG')">BIG</button>
-  <button class="small" onclick="send('SMALL')">SMALL</button>
-</div>
-
-<div class="box">
-  <button class="green" onclick="setColor('GREEN')">GREEN</button>
-  <button class="red" onclick="setColor('RED')">RED</button>
-  <button class="violet" onclick="setColor('VIOLET')">VIOLET</button>
+<div class="card">
+  <button class="big" onclick="sendSignal('BIG')">BIG</button>
+  <button class="small" onclick="sendSignal('SMALL')">SMALL</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -65,40 +47,20 @@ input,select{
 
 <script>
 var firebaseConfig = {
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
 };
 firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
 
-const ADMIN_PIN = "Asad11";
-let currentColor = "GREEN";
-
-function setColor(c){
-  currentColor = c;
-  alert("Color set: " + c);
-}
-
-function send(size){
-  if(pin.value !== ADMIN_PIN){
-    alert("Wrong PIN");
-    return;
-  }
-
-  firebase.database().ref("counter").once("value", snap=>{
-    let n = snap.val() || 0;
-    n++;
-
-    firebase.database().ref().set({
-      counter: n,
-      signal:{
-        number: n,
-        size: size,
-        color: currentColor,
-        time: time.value
-      }
-    });
-
-    alert("Sent: #" + n + " " + size + " " + currentColor);
+function sendSignal(signal){
+  db.ref("signal").set({
+    value: signal,
+    time: Date.now()
   });
+  alert("Signal Sent: " + signal);
 }
 </script>
 
