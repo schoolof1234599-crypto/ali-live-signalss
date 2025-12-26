@@ -42,6 +42,32 @@ button{
 </head>
 
 <body>
+  <div id="bot" class="section" style="display:none">
+
+  <h3>🤖 Trading Bot</h3>
+
+  <div id="botChat" style="
+    height:200px;
+    overflow:auto;
+    background:#020617;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+  ">
+    <div>🤖 Hello! Ask me about BIG / SMALL</div>
+  </div>
+
+  <input id="botInput" placeholder="Type here..."
+    style="width:70%;padding:10px;border-radius:8px;border:none">
+
+  <button onclick="askBot()" style="
+    padding:10px 15px;
+    border-radius:8px;
+    background:#22c55e;
+    border:none;
+  ">Send</button>
+
+  </div>
 <h3>📜 Last Signals</h3>
 <ul id="history"></ul>
 
@@ -84,5 +110,37 @@ function openSection(id){
   document.getElementById(id).style.display="block";
 }
 </script>
+  <script>
+function askBot(){
+  let q = document.getElementById("botInput").value.toLowerCase();
+  let chat = document.getElementById("botChat");
+
+  if(q === "") return;
+
+  chat.innerHTML += "<div>👤 "+q+"</div>";
+
+  let reply = "Please ask about BIG, SMALL, TIME or PROFIT";
+
+  if(q.includes("big"))
+    reply = "BIG = High numbers (5-9). Risk medium.";
+  else if(q.includes("small"))
+    reply = "SMALL = Low numbers (0-4). Risk medium.";
+  else if(q.includes("time"))
+    reply = "Sessions: 12:30 | 2:00 | 3:00 | 4:00";
+  else if(q.includes("profit"))
+    reply = "Follow signal with discipline for profit 📈";
+  else if(q.includes("loss"))
+    reply = "Always use risk management ❗";
+  else if(q.includes("help"))
+    reply = "Use WingO for live signal. Ask BIG or SMALL.";
+
+  setTimeout(()=>{
+    chat.innerHTML += "<div>🤖 "+reply+"</div>";
+    chat.scrollTop = chat.scrollHeight;
+  },500);
+
+  document.getElementById("botInput").value="";
+}
+  </script>
 </body>
 </html>
