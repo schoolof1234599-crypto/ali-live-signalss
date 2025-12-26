@@ -4,47 +4,107 @@
 <meta charset="UTF-8">
 <title>Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
+  font-family: Arial, sans-serif;
+  background:#111;
+  color:#fff;
   margin:0;
-  background:#020617;
-  color:white;
-  font-family:Arial;
-  padding:20px;
+  padding:0;
 }
-.card{
-  background:#0f172a;
-  padding:20px;
-  border-radius:10px;
-  margin-bottom:15px;
+
+h2{
+  text-align:center;
+  padding:15px;
+  background:#000;
 }
-button{
+
+.menu{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  background:#1a1a1a;
+  padding:10px;
+}
+
+.menu button{
+  margin:5px;
   padding:10px 15px;
   border:none;
-  border-radius:6px;
-  background:#ef4444;
-  color:white;
+  border-radius:5px;
+  background:#00c2ff;
+  color:#000;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.menu button:hover{
+  background:#00ff9c;
+}
+
+.section{
+  display:none;
+  padding:20px;
+  margin:10px;
+  background:#222;
+  border-radius:8px;
 }
 </style>
 </head>
 
 <body>
-<h1>📊 Dashboard</h1>
 
-<div class="card">📈 Live Signal 1</div>
-<div class="card">📉 Live Signal 2</div>
+<h2>📊 Trading Dashboard</h2>
 
-<button onclick="logout()">لاگ آؤٹ</button>
+<!-- Buttons -->
+<div class="menu">
+  <button onclick="openSection('wingo')">🎯 WingO</button>
+  <button onclick="openSection('timing')">⏰ Session Timing</button>
+  <button onclick="openSection('profit')">✅ Profit</button>
+  <button onclick="openSection('loss')">❌ Loss</button>
+  <button onclick="openSection('bot')">🤖 Bot Chat</button>
+</div>
 
+<!-- Sections -->
+<div id="wingo" class="section">
+  <h3>LIVE COLOR TRADING SIGNALS</h3>
+  Red / Green signals here
+</div>
+
+<div id="timing" class="section">
+  <h3>Session Timing</h3>
+  12:30<br>
+  1:00<br>
+  2:00<br>
+  3:00<br>
+  4:00
+</div>
+
+<div id="profit" class="section">
+  <h3>This Week Profit</h3>
+  +₹8,500
+</div>
+
+<div id="loss" class="section">
+  <h3>This Week Loss</h3>
+  −₹2,100
+</div>
+
+<div id="bot" class="section">
+  <h3>Bot Chat</h3>
+  Hello! Ask me about BIG or SMALL
+</div>
+
+<!-- Script -->
 <script>
-function logout(){
-  window.location.href="index.html";
-}
-  <script>
-if(localStorage.getItem("login")!=="yes"){
-  window.location.href="index.html";
+function openSection(id){
+  document.querySelectorAll('.section').forEach(function(sec){
+    sec.style.display="none";
+  });
+  document.getElementById(id).style.display="block";
 }
 </script>
-</script>
+
 </body>
-</html>
+                                  </html>
