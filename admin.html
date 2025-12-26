@@ -1,18 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Admin Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script>
-let pin = prompt("Enter Admin PIN");
-if(pin !== "1234"){
-  alert("Wrong PIN");
-  document.body.innerHTML = "";
-}
-</script>
-
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -20,108 +13,96 @@ if(pin !== "1234"){
 firebase.initializeApp({
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
 });
+
+// 🔐 ADMIN PIN
+let adminPin = prompt("Enter Admin PIN");
+if(adminPin !== "1234"){
+  alert("Wrong PIN");
+  document.body.innerHTML = "";
+}
+
+// 📡 SEND SIGNAL
+function sendSignal(type){
+  firebase.database().ref("signal").set({
+    current: type,
+    time: new Date().toLocaleTimeString()
+  });
+  alert("Signal Sent: " + type);
+}
+
+// ⏸️ PAUSE
+function pauseSignal(){
+  firebase.database().ref("signal").set({
+    current: "PAUSED",
+    time: "---"
+  });
+}
+
+// 🧹 CLEAR
+function clearSignal(){
+  firebase.database().ref("signal").remove();
+  alert("Signal Cleared");
+}
+
+// 📩 MESSAGE TO USERS
+function sendMessage(){
+  let msg = document.getElementById("msg").value;
+  if(msg==="") return;
+  firebase.database().ref("message").set({
+    text: msg,
+    time: Date.now()
+  });
+  document.getElementById("msg").value="";
+}
 </script>
 
 <style>
-body{background:#000;color:white;text-align:center;font-family:sans-serif}
-button{padding:15px;margin:10px;font-size:18px;border-radius:10px}
-input{padding:10px;margin:5px;border-radius:8px}
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+button{
+  padding:15px 25px;
+  margin:10px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+}
+.big{background:#22c55e;color:black}
+.small{background:#ef4444;color:white}
+.pause{background:#facc15;color:black}
+.clear{background:#94a3b8;color:black}
+input{
+  padding:12px;
+  width:80%;
+  border-radius:8px;
+  border:none;
+  font-size:16px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>🔐 ADMIN PANEL</h1>
+<h1>🔐 ADMIN CONTROL PANEL</h1>
 
-<!-- ADMIN MESSAGE -->
-<input id="adminMsg" placeholder="Message to users">
+<!-- MESSAGE -->
+<input id="msg" placeholder="Message for users..." />
 <br>
 <button onclick="sendMessage()">📩 Send Message</button>
 
 <hr>
 
-<input id="time" placeholder="Time (e.g 2 min)">
-
-<br><br>
-
-<button onclick="sendSignal('BIG')" style="background:green;color:white">BIG</button>
-<button onclick="sendSignal('SMALL')" style="background:red;color:white">SMALL</button>
+<!-- SIGNAL BUTTONS -->
+<button class="big" onclick="sendSignal('BIG')">BIG</button>
+<button class="small" onclick="sendSignal('SMALL')">SMALL</button>
 
 <br>
 
-<button onclick="pauseSignal()" style="background:#facc15;color:black">⏸️ PAUSE</button>
-<button onclick="clearSignal()" style="background:#94a3b8;color:black">🧹 CLEAR</button>
+<button class="pause" onclick="pauseSignal()">⏸️ PAUSE</button>
+<button class="clear" onclick="clearSignal()">🧹 CLEAR</button>
 
-<h3>📊 STATS</h3>
-<p id="profit">Profit: 0</p>
-<p id="loss">Loss: 0</p>
-
-<script>
-// SEND MESSAGE
-function sendMessage(){
-  firebase.database().ref("message").set({
-    text: document.getElementById("adminMsg").value,
-    time: Date.now()
-  });
-  document.getElementById("adminMsg").value="";
-}
-
-// SEND SIGNAL
-function sendSignal(val){
-  firebase.database().ref("signal").set({
-    current: val,
-    time: document.getElementById("time").value,
-    at: Date.now()
-  });
-
-  firebase.database().ref("history").push({
-    current: val,
-    time: document.getElementById("time").value,
-    at: Date.now()
-  });
-
-  alert("Signal Sent: " + val);
-}
-
-// PAUSE
-function pauseSignal(){
-  firebase.database().ref("signal").set({
-    current:"PAUSED",
-    time:"---",
-    at:Date.now()
-  });
-}
-
-// CLEAR
-function clearSignal(){
-  firebase.database().ref("signal").remove();
-}
-
-// STATS
-firebase.database().ref("votes").on("value", s=>{
-  let v=s.val()||{};
-  document.getElementById("profit").innerText="Profit: "+(v.profit||0);
-  document.getElementById("loss").innerText="Loss: "+(v.loss||0);
-});
-</script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<script>
-firebase.initializeApp({
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-});
-
-function sendSignal(value){
-  firebase.database().ref("signal").set({
-    current: value,
-    time: Date.now()
-  });
-  alert("Signal sent: " + value);
-}
-</script>
-
-<button onclick="sendSignal('BIG')" style="padding:20px;background:green;color:white">BIG</button>
-<button onclick="sendSignal('SMALL')" style="padding:20px;background:red;color:white">SMALL</button>
 </body>
 </html>
