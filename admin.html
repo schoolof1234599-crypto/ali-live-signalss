@@ -26,6 +26,9 @@ button{padding:15px;margin:10px;font-size:18px}
 </head>
 
 <body>
+  <input id="adminMsg" placeholder="Message to users..." />
+
+<button onclick="sendMessage()">📩 Send Message</button>
 
 <h1>🔐 ADMIN PANEL</h1>
 
@@ -76,6 +79,21 @@ SMALL
 </button>
 
 <script>
+  <script>
+function sendMessage(){
+  if(pass.value !== adminPassword){
+    alert("Wrong PIN");
+    return;
+  }
+
+  firebase.database().ref("message").set({
+    text: document.getElementById("adminMsg").value,
+    time: Date.now()
+  });
+
+  document.getElementById("adminMsg").value = "";
+}
+</script>
   function pauseSignal(){
   firebase.database().ref("signal").set({
     current: "PAUSED",
