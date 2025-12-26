@@ -54,6 +54,28 @@ h2{
 </head>
 
 <body>
+  <h2>📡 LIVE SIGNAL</h2>
+<div id="liveSignal" style="
+  font-size:40px;
+  padding:20px;
+  border-radius:15px;
+  background:#111;
+">
+WAITING...
+</div>
+
+<script>
+function loadSignal(){
+  let s = localStorage.getItem("signal");
+  if(s){
+    document.getElementById("liveSignal").innerText = s;
+    document.getElementById("liveSignal").style.background =
+      s==="BIG" ? "green" : "red";
+  }
+}
+
+setInterval(loadSignal, 1000);
+</script>
 
 <h2>📊 Trading Dashboard</h2>
 
