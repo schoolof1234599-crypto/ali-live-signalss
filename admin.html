@@ -4,15 +4,18 @@
 <meta charset="UTF-8">
 <title>Admin Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script>
 let pin = prompt("Enter Admin PIN");
-if(pin!=="1234"){
+if(pin !== "1234"){
   alert("Wrong PIN");
-  document.body.innerHTML="";
+  document.body.innerHTML = "";
 }
 </script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
 <script>
 firebase.initializeApp({
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
@@ -20,99 +23,87 @@ firebase.initializeApp({
 </script>
 
 <style>
-body{background:#000;color:white;text-align:center}
-button{padding:15px;margin:10px;font-size:18px}
+body{background:#000;color:white;text-align:center;font-family:sans-serif}
+button{padding:15px;margin:10px;font-size:18px;border-radius:10px}
+input{padding:10px;margin:5px;border-radius:8px}
 </style>
 </head>
 
 <body>
-  <input id="adminMsg" placeholder="Message to users..." />
-
-<button onclick="sendMessage()">📩 Send Message</button>
 
 <h1>🔐 ADMIN PANEL</h1>
 
-<input id="number" placeholder="Number">
-<input id="time" placeholder="Time">
+<!-- ADMIN MESSAGE -->
+<input id="adminMsg" placeholder="Message to users">
+<br>
+<button onclick="sendMessage()">📩 Send Message</button>
+
+<hr>
+
+<input id="time" placeholder="Time (e.g 2 min)">
+
 <br><br>
 
-<button onclick="pauseSignal()" style="background:#facc15;color:black">
-⏸️ PAUSE
-</button>
+<button onclick="sendSignal('BIG')" style="background:green;color:white">BIG</button>
+<button onclick="sendSignal('SMALL')" style="background:red;color:white">SMALL</button>
 
-<button onclick="clearSignal()" style="background:#94a3b8;color:black">
-🧹 CLEAR
-  </button>
 <br>
 
-<button onclick="send('BIG','GREEN')">BIG</button>
-<button onclick="send('SMALL','RED')">SMALL</button>
+<button onclick="pauseSignal()" style="background:#facc15;color:black">⏸️ PAUSE</button>
+<button onclick="clearSignal()" style="background:#94a3b8;color:black">🧹 CLEAR</button>
 
 <h3>📊 STATS</h3>
 <p id="profit">Profit: 0</p>
 <p id="loss">Loss: 0</p>
 
 <script>
-firebase.database().ref("signal").set({
-  current: val,
-  time: time.value,
-  at: Date.now()
-});
-
-firebase.database().ref("history").push({
-  current: val,
-  time: time.value,
-  at: Date.now()
-});
-firebase.database().ref("votes").on("value", s=>{
-  let v=s.val()||{};
-  profit.innerText="Profit: "+(v.profit||0);
-  loss.innerText="Loss: "+(v.loss||0);
-});
-</script>
-  <button onclick="sendSignal('BIG')" style="padding:20px;background:green;color:white;font-size:20px">
-BIG
-</button>
-
-<button onclick="sendSignal('SMALL')" style="padding:20px;background:red;color:white;font-size:20px">
-SMALL
-</button>
-
-<script>
-  <script>
+// SEND MESSAGE
 function sendMessage(){
-  if(pass.value !== adminPassword){
-    alert("Wrong PIN");
-    return;
-  }
-
   firebase.database().ref("message").set({
     text: document.getElementById("adminMsg").value,
     time: Date.now()
   });
-
-  document.getElementById("adminMsg").value = "";
+  document.getElementById("adminMsg").value="";
 }
-</script>
-  function pauseSignal(){
+
+// SEND SIGNAL
+function sendSignal(val){
   firebase.database().ref("signal").set({
-    current: "PAUSED",
-    time: "---",
+    current: val,
+    time: document.getElementById("time").value,
     at: Date.now()
   });
-  alert("Signal Paused");
+
+  firebase.database().ref("history").push({
+    current: val,
+    time: document.getElementById("time").value,
+    at: Date.now()
+  });
+
+  alert("Signal Sent: " + val);
 }
 
+// PAUSE
+function pauseSignal(){
+  firebase.database().ref("signal").set({
+    current:"PAUSED",
+    time:"---",
+    at:Date.now()
+  });
+}
+
+// CLEAR
 function clearSignal(){
   firebase.database().ref("signal").remove();
-  alert("Signal Cleared");
-  }
-function sendSignal(value){
-  localStorage.setItem("signal", value);
-  alert("Signal Sent: " + value);
 }
+
+// STATS
+firebase.database().ref("votes").on("value", s=>{
+  let v=s.val()||{};
+  document.getElementById("profit").innerText="Profit: "+(v.profit||0);
+  document.getElementById("loss").innerText="Loss: "+(v.loss||0);
+});
 </script>
 
-  
 </body>
 </html>
