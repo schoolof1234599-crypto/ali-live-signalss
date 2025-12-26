@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>User Dashboard</title>
@@ -18,135 +18,62 @@ firebase.initializeApp({
 <style>
 body{
   background:#000;
-  color:#fff;
+  color:white;
   font-family:Arial;
-  margin:0;
-  padding:10px;
-}
-button{
-  padding:12px;
-  margin:5px;
-  font-size:16px;
+  text-align:center;
 }
 .section{
-  display:none;
   border:1px solid #333;
-  padding:10px;
-  margin-top:10px;
-}
-#botChat{
-  height:200px;
-  overflow:auto;
-  border:1px solid #444;
-  padding:5px;
+  padding:15px;
+  margin:15px;
 }
 </style>
-
-<script>
-// 🔐 LOGIN CHECK
-if(localStorage.getItem("login")!=="yes"){
-  window.location.href="index.html";
-}
-</script>
 </head>
 
 <body>
 
-<h2>📊 USER DASHBOARD</h2>
+<h1>📊 USER PANEL</h1>
 
-<!-- NAV BUTTONS -->
-<button onclick="openSection('wingo')">🎯 WingO</button>
-<button onclick="openSection('bot')">🤖 Bot</button>
-<button onclick="openSection('profit')">✅ Profit</button>
-<button onclick="openSection('loss')">❌ Loss</button>
-
-<hr>
-
-<!-- ADMIN MESSAGE -->
-<h3>📩 Admin Message</h3>
-<p id="adminMessage">No message</p>
-
-<!-- SECTIONS -->
-
-<div id="wingo" class="section">
-  <h3>LIVE SIGNAL</h3>
-  <h1 id="signalText">Waiting...</h1>
+<div class="section">
+  <h3>📩 Admin Message</h3>
+  <p id="adminMessage">Waiting...</p>
 </div>
 
-<div id="bot" class="section">
-  <h3>🤖 Bot Chat</h3>
-  <div id="botChat"></div><br>
-  <input id="botInput" placeholder="Ask BIG / SMALL / TIME" />
-  <button onclick="askBot()">Send</button>
+<div class="section">
+  <h2>🎯 LIVE SIGNAL</h2>
+  <h1 id="signalText">WAITING...</h1>
+  <p id="signalTime"></p>
 </div>
 
-<div id="profit" class="section">
-  <h3>✅ Weekly Profit</h3>
-  <p>Profit: +120%</p>
-</div>
-
-<div id="loss" class="section">
-  <h3>❌ Weekly Loss</h3>
-  <p>Loss: -30%</p>
-</div>
-
-<!-- AUDIO -->
 <audio id="bigSound" src="big.mp3"></audio>
 <audio id="smallSound" src="small.mp3"></audio>
 
-<!-- SCRIPTS -->
-
 <script>
-// SECTION CONTROL
-function openSection(id){
-  document.querySelectorAll('.section').forEach(s=>s.style.display="none");
-  document.getElementById(id).style.display="block";
-}
-</script>
-
-<script>
-// BOT
-function askBot(){
-  let q = botInput.value.toLowerCase();
-  if(q==="") return;
-
-  botChat.innerHTML += "<div>👤 "+q+"</div>";
-
-  let reply="Ask about BIG or SMALL";
-
-  if(q.includes("big")) reply="BIG = 5-9 numbers";
-  else if(q.includes("small")) reply="SMALL = 0-4 numbers";
-  else if(q.includes("time")) reply="12:30 | 2:00 | 3:00 | 4:00";
-  else if(q.includes("profit")) reply="Follow signal strictly";
-  else if(q.includes("loss")) reply="Use risk management";
-
-  setTimeout(()=>{
-    botChat.innerHTML += "<div>🤖 "+reply+"</div>";
-    botChat.scrollTop = botChat.scrollHeight;
-  },400);
-
-  botInput.value="";
-}
-</script>
-
-<script>
-// 🔴 LIVE SIGNAL + SOUND
+// LIVE SIGNAL
 firebase.database().ref("signal").on("value", snap=>{
   let d = snap.val();
-  if(!d) return;
+  if(!d){
+    signalText.innerText = "WAITING...";
+    return;
+  }
 
   signalText.innerText = d.current;
+  signalTime.innerText = d.time;
 
-  if(d.current==="BIG") bigSound.play();
-  if(d.current==="SMALL") smallSound.play();
+  if(d.current === "BIG"){
+    bigSound.play();
+  }
+  if(d.current === "SMALL"){
+    smallSound.play();
+  }
 });
-</script>
 
-<script>
-// 📩 ADMIN MESSAGE
+// ADMIN MESSAGE
 firebase.database().ref("message").on("value", snap=>{
-  let d=snap.val();
-  if(d) adminMessage.innerText=d.text;
+  let d = snap.val();
+  if(d){
+    adminMessage.innerText = d.text;
+  }
 });
 </script>
 
