@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Admin Panel</title>
@@ -13,96 +13,66 @@
 firebase.initializeApp({
   databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
 });
-
-// 🔐 ADMIN PIN
-let adminPin = prompt("Enter Admin PIN");
-if(adminPin !== "1234"){
-  alert("Wrong PIN");
-  document.body.innerHTML = "";
-}
-
-// 📡 SEND SIGNAL
-function sendSignal(type){
-  firebase.database().ref("signal").set({
-    current: type,
-    time: new Date().toLocaleTimeString()
-  });
-  alert("Signal Sent: " + type);
-}
-
-// ⏸️ PAUSE
-function pauseSignal(){
-  firebase.database().ref("signal").set({
-    current: "PAUSED",
-    time: "---"
-  });
-}
-
-// 🧹 CLEAR
-function clearSignal(){
-  firebase.database().ref("signal").remove();
-  alert("Signal Cleared");
-}
-
-// 📩 MESSAGE TO USERS
-function sendMessage(){
-  let msg = document.getElementById("msg").value;
-  if(msg==="") return;
-  firebase.database().ref("message").set({
-    text: msg,
-    time: Date.now()
-  });
-  document.getElementById("msg").value="";
-}
 </script>
 
 <style>
 body{
-  background:#0f172a;
+  background:#000;
   color:white;
-  font-family:Arial;
   text-align:center;
+  font-family:Arial;
 }
-button{
-  padding:15px 25px;
+button,input{
+  padding:15px;
   margin:10px;
   font-size:18px;
-  border:none;
-  border-radius:10px;
 }
-.big{background:#22c55e;color:black}
-.small{background:#ef4444;color:white}
-.pause{background:#facc15;color:black}
-.clear{background:#94a3b8;color:black}
-input{
-  padding:12px;
-  width:80%;
-  border-radius:8px;
-  border:none;
-  font-size:16px;
-}
+.big{background:green;color:white}
+.small{background:red;color:white}
 </style>
 </head>
 
 <body>
 
-<h1>🔐 ADMIN CONTROL PANEL</h1>
+<script>
+let pin = prompt("Enter Admin PIN");
+if(pin !== "1234"){
+  alert("Wrong PIN");
+  document.body.innerHTML="";
+}
+</script>
 
-<!-- MESSAGE -->
-<input id="msg" placeholder="Message for users..." />
+<h1>🔐 ADMIN PANEL</h1>
+
+<h3>📩 Message to Users</h3>
+<input id="adminMsg" placeholder="Type message..." style="width:80%">
 <br>
-<button onclick="sendMessage()">📩 Send Message</button>
+<button onclick="sendMessage()">Send Message</button>
 
 <hr>
 
-<!-- SIGNAL BUTTONS -->
+<h3>🎯 Send Signal</h3>
 <button class="big" onclick="sendSignal('BIG')">BIG</button>
 <button class="small" onclick="sendSignal('SMALL')">SMALL</button>
 
-<br>
+<script>
+function sendSignal(val){
+  firebase.database().ref("signal").set({
+    current: val,
+    time: new Date().toLocaleTimeString()
+  });
+  alert("Signal sent: " + val);
+}
 
-<button class="pause" onclick="pauseSignal()">⏸️ PAUSE</button>
-<button class="clear" onclick="clearSignal()">🧹 CLEAR</button>
+function sendMessage(){
+  let msg = document.getElementById("adminMsg").value;
+  firebase.database().ref("message").set({
+    text: msg,
+    time: Date.now()
+  });
+  document.getElementById("adminMsg").value="";
+}
+</script>
 
 </body>
 </html>
