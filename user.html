@@ -1,60 +1,201 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>User Signal</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Ali Trading Website</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+
 body{
-  background:#000;
-  color:white;
-  font-family:Arial;
-  text-align:center;
-  padding-top:80px;
+background:#0b0f1a;
+color:white;
+min-height:100vh;
 }
-#box{
-  width:90%;
-  margin:auto;
-  padding:40px;
-  font-size:50px;
-  border-radius:15px;
+
+.hidden{display:none}
+
+/* LOGIN BOX */
+.login-box{
+max-width:360px;
+margin:80px auto;
+padding:25px;
+background:#12182b;
+border-radius:12px;
+box-shadow:0 0 20px #00ffcc55;
+text-align:center;
 }
-.big{background:green;}
-.small{background:red;}
+
+.login-box h2{
+margin-bottom:10px;
+color:#00ffcc;
+}
+
+.login-box input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+outline:none;
+border-radius:8px;
+background:#1c2440;
+color:white;
+}
+
+.login-box button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+background:linear-gradient(45deg,#00ffcc,#00aaff);
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+.login-box p{
+margin-top:12px;
+font-size:13px;
+color:#aaa;
+}
+
+/* HEADER */
+header{
+padding:15px;
+background:#12182b;
+text-align:center;
+border-bottom:1px solid #00ffcc44;
+}
+
+header h1{
+color:#00ffcc;
+font-size:22px;
+}
+
+header span{
+font-size:14px;
+color:#ccc;
+}
+
+/* MAIN */
+.container{
+padding:15px;
+}
+
+.card{
+background:#12182b;
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+box-shadow:0 0 15px #00ffcc22;
+}
+
+.card h3{
+color:#00ffcc;
+margin-bottom:8px;
+}
+
+.trade-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:10px;
+}
+
+.trade-btn{
+padding:15px;
+border-radius:10px;
+text-align:center;
+font-weight:bold;
+cursor:pointer;
+}
+
+.green{background:#00ff9955}
+.red{background:#ff4d4d55}
+.blue{background:#00aaff55}
+.yellow{background:#ffcc0055}
+
+.footer{
+text-align:center;
+padding:10px;
+font-size:12px;
+color:#777;
+}
 </style>
 </head>
+
 <body>
 
-<h2>📡 LIVE SIGNAL</h2>
+<!-- LOGIN SECTION -->
+<div id="loginSection" class="login-box">
+<h2>Login</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p>Demo Login: <br> ali / ali123</p>
+</div>
 
-<div id="box">WAITING...</div>
+<!-- WEBSITE SECTION -->
+<div id="siteSection" class="hidden">
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<header>
+<h1>Ali Trading Website</h1>
+<span>Reference: Ali Mansoori</span>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h3>📊 Color Trading Signals</h3>
+<div class="trade-grid">
+<div class="trade-btn green">GREEN<br>BUY</div>
+<div class="trade-btn red">RED<br>SELL</div>
+<div class="trade-btn blue">BLUE<br>BUY</div>
+<div class="trade-btn yellow">YELLOW<br>HOLD</div>
+</div>
+</div>
+
+<div class="card">
+<h3>💹 Today Signals</h3>
+<p>🔔 Green → Strong Buy</p>
+<p>🔔 Red → Risky</p>
+<p>🔔 Blue → Safe Trade</p>
+</div>
+
+<div class="card">
+<h3>📈 Profit / Loss (Demo)</h3>
+<p>Today Profit: <b style="color:#00ff99">+450 PKR</b></p>
+<p>Loss: <b style="color:#ff4d4d">-120 PKR</b></p>
+</div>
+
+<div class="card">
+<h3>📢 Important Note</h3>
+<p>یہ صرف Demo Trading Website ہے۔  
+Original signals WhatsApp / Telegram پر دیے جاتے ہیں۔</p>
+</div>
+
+</div>
+
+<div class="footer">
+© 2025 Ali Trading | Demo Version
+</div>
+
+</div>
 
 <script>
-var firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-};
-firebase.initializeApp(firebaseConfig);
+function login(){
+let user=document.getElementById("username").value;
+let pass=document.getElementById("password").value;
 
-firebase.database().ref("signal").on("value", function(snapshot){
-  let data = snapshot.val();
-  if(!data) return;
-
-  let box = document.getElementById("box");
-  box.innerText = data.current;
-
-  if(data.current === "BIG"){
-    box.className = "big";
-  }else{
-    box.className = "small";
-  }
-});
+if(user==="ali" && pass==="ali123"){
+document.getElementById("loginSection").style.display="none";
+document.getElementById("siteSection").classList.remove("hidden");
+}else{
+alert("Wrong Username or Password");
+}
+}
 </script>
 
 </body>
-</html>
+  </html>
