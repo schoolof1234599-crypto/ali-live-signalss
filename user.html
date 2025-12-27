@@ -1,56 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>User Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Signal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+  background:#000;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding-top:80px;
+}
+#box{
+  width:90%;
+  margin:auto;
+  padding:40px;
+  font-size:50px;
+  border-radius:15px;
+}
+.big{background:green;}
+.small{background:red;}
+</style>
+</head>
+<body>
+
+<h2>📡 LIVE SIGNAL</h2>
+
+<div id="box">WAITING...</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-firebase.initializeApp({
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-});
-</script>
+var firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+};
+firebase.initializeApp(firebaseConfig);
 
-<style>
-body{
-  background:black;
-  color:white;
-  text-align:center;
-  font-family:Arial;
-}
-h1{
-  font-size:40px;
-}
-</style>
-</head>
-
-<body>
-
-<h1>🎯 LIVE SIGNAL</h1>
-<h2 id="signal">WAITING...</h2>
-<h3 id="time">--:--</h3>
-
-<audio id="bigSound" src="big.mp3"></audio>
-<audio id="smallSound" src="small.mp3"></audio>
-
-<script>
-firebase.database().ref("liveSignal").on("value", function(snapshot){
+firebase.database().ref("signal").on("value", function(snapshot){
   let data = snapshot.val();
   if(!data) return;
 
-  document.getElementById("signal").innerText = data.signal;
-  document.getElementById("time").innerText = data.time;
+  let box = document.getElementById("box");
+  box.innerText = data.current;
 
-  if(data.signal === "BIG"){
-    document.getElementById("bigSound").play();
-  }
-
-  if(data.signal === "SMALL"){
-    document.getElementById("smallSound").play();
+  if(data.current === "BIG"){
+    box.className = "big";
+  }else{
+    box.className = "small";
   }
 });
 </script>
