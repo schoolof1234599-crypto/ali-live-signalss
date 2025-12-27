@@ -2,197 +2,166 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ali Trading Website</title>
+<title>Ali Khan Trader</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-
 body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
 background:#0b0f1a;
 color:white;
-min-height:100vh;
 }
 
-.hidden{display:none}
+.center{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
 
-/* LOGIN BOX */
-.login-box{
-max-width:360px;
-margin:80px auto;
-padding:25px;
+.box{
 background:#12182b;
-border-radius:12px;
+padding:25px;
+border-radius:14px;
+width:90%;
+max-width:360px;
 box-shadow:0 0 20px #00ffcc55;
 text-align:center;
 }
 
-.login-box h2{
-margin-bottom:10px;
-color:#00ffcc;
-}
-
-.login-box input{
+input{
 width:100%;
 padding:12px;
 margin:10px 0;
 border:none;
-outline:none;
 border-radius:8px;
 background:#1c2440;
 color:white;
+font-size:16px;
 }
 
-.login-box button{
+button{
 width:100%;
-padding:12px;
-margin-top:10px;
+padding:14px;
 border:none;
-border-radius:8px;
-background:linear-gradient(45deg,#00ffcc,#00aaff);
-color:black;
+border-radius:10px;
+font-size:18px;
 font-weight:bold;
 cursor:pointer;
+background:linear-gradient(45deg,#00ffcc,#00aaff);
+color:black;
+margin-top:10px;
 }
 
-.login-box p{
-margin-top:12px;
-font-size:13px;
-color:#aaa;
-}
+.hidden{display:none}
 
-/* HEADER */
 header{
-padding:15px;
 background:#12182b;
-text-align:center;
-border-bottom:1px solid #00ffcc44;
-}
-
-header h1{
-color:#00ffcc;
-font-size:22px;
-}
-
-header span{
-font-size:14px;
-color:#ccc;
-}
-
-/* MAIN */
-.container{
 padding:15px;
+text-align:center;
+border-bottom:1px solid #00ffcc33;
 }
 
 .card{
 background:#12182b;
+margin:15px;
 padding:15px;
-border-radius:12px;
-margin-bottom:15px;
+border-radius:14px;
 box-shadow:0 0 15px #00ffcc22;
 }
 
-.card h3{
-color:#00ffcc;
-margin-bottom:8px;
+.download{
+background:linear-gradient(45deg,#ffcc00,#ff8800);
+color:black;
 }
 
-.trade-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-gap:10px;
-}
-
-.trade-btn{
-padding:15px;
-border-radius:10px;
+footer{
 text-align:center;
-font-weight:bold;
-cursor:pointer;
-}
-
-.green{background:#00ff9955}
-.red{background:#ff4d4d55}
-.blue{background:#00aaff55}
-.yellow{background:#ffcc0055}
-
-.footer{
-text-align:center;
-padding:10px;
 font-size:12px;
 color:#777;
+padding:10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN SECTION -->
-<div id="loginSection" class="login-box">
-<h2>Login</h2>
-<input type="text" id="username" placeholder="Username">
-<input type="password" id="password" placeholder="Password">
-<button onclick="login()">Login</button>
-<p>Demo Login: <br> ali / ali123</p>
+<!-- LOCK SCREEN -->
+<div id="lock" class="center">
+  <div class="box">
+    <h2>🔐 Enter PIN</h2>
+    <input id="pin" placeholder="Enter PIN">
+    <button onclick="unlock()">Unlock</button>
+    <p style="font-size:13px;color:#aaa">Forgot PIN? Use password</p>
+  </div>
 </div>
 
-<!-- WEBSITE SECTION -->
-<div id="siteSection" class="hidden">
+<!-- SET PIN -->
+<div id="setPin" class="center hidden">
+  <div class="box">
+    <h2>🔑 Set Your PIN</h2>
+    <input id="newPin" placeholder="Create PIN">
+    <button onclick="savePin()">Save PIN</button>
+  </div>
+</div>
+
+<!-- MAIN SITE -->
+<div id="site" class="hidden">
 
 <header>
-<h1>Ali Trading Website</h1>
-<span>Reference: Ali Mansoori</span>
+  <h2>🦅 ALI KHAN TRADER</h2>
+  <p>Reference: Ali Mansoori</p>
 </header>
 
-<div class="container">
-
 <div class="card">
-<h3>📊 Color Trading Signals</h3>
-<div class="trade-grid">
-<div class="trade-btn green">GREEN<br>BUY</div>
-<div class="trade-btn red">RED<br>SELL</div>
-<div class="trade-btn blue">BLUE<br>BUY</div>
-<div class="trade-btn yellow">YELLOW<br>HOLD</div>
-</div>
+  <h3>📡 Live Signal</h3>
+  <p style="font-size:22px">WAITING 🔄</p>
 </div>
 
 <div class="card">
-<h3>💹 Today Signals</h3>
-<p>🔔 Green → Strong Buy</p>
-<p>🔔 Red → Risky</p>
-<p>🔔 Blue → Safe Trade</p>
+  <h3>📱 Android App</h3>
+  <p>Download our official app for fast signals 🚀</p>
+
+  <a href="com-happymod-apk-3-2-5.apk" download>
+    <button class="download">⬇️ JACK – Download App</button>
+  </a>
 </div>
 
 <div class="card">
-<h3>📈 Profit / Loss (Demo)</h3>
-<p>Today Profit: <b style="color:#00ff99">+450 PKR</b></p>
-<p>Loss: <b style="color:#ff4d4d">-120 PKR</b></p>
+  <h3>🔔 Alerts</h3>
+  <p>Vibration enabled on new signal 📳</p>
 </div>
 
-<div class="card">
-<h3>📢 Important Note</h3>
-<p>یہ صرف Demo Trading Website ہے۔  
-Original signals WhatsApp / Telegram پر دیے جاتے ہیں۔</p>
-</div>
-
-</div>
-
-<div class="footer">
-© 2025 Ali Trading | Demo Version
-</div>
+<footer>
+© 2025 Ali Khan Trader
+</footer>
 
 </div>
 
 <script>
-function login(){
-let user=document.getElementById("username").value;
-let pass=document.getElementById("password").value;
+let savedPin = localStorage.getItem("userPin");
 
-if(user==="ali" && pass==="ali123"){
-document.getElementById("loginSection").style.display="none";
-document.getElementById("siteSection").classList.remove("hidden");
+if(!savedPin){
+document.getElementById("lock").classList.add("hidden");
+document.getElementById("setPin").classList.remove("hidden");
+}
+
+function savePin(){
+let p=document.getElementById("newPin").value;
+if(p.length<3){alert("PIN too short");return;}
+localStorage.setItem("userPin",p);
+location.reload();
+}
+
+function unlock(){
+let p=document.getElementById("pin").value;
+if(p===localStorage.getItem("userPin") || p==="Ali11"){
+document.getElementById("lock").classList.add("hidden");
+document.getElementById("site").classList.remove("hidden");
+if(navigator.vibrate) navigator.vibrate(200);
 }else{
-alert("Wrong Username or Password");
+alert("Wrong PIN ❌");
 }
 }
 </script>
