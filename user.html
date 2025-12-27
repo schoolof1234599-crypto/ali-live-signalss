@@ -12,25 +12,22 @@ font-family:Arial,Helvetica,sans-serif;
 background:#0b0f1a;
 color:white;
 }
-
 .center{
 min-height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
 }
-
 .box{
 background:#12182b;
 padding:25px;
-border-radius:14px;
+border-radius:15px;
 width:90%;
-max-width:360px;
-box-shadow:0 0 20px #00ffcc55;
+max-width:380px;
+box-shadow:0 0 25px #00ffcc55;
 text-align:center;
 }
-
-input{
+input,select{
 width:100%;
 padding:12px;
 margin:10px 0;
@@ -40,29 +37,25 @@ background:#1c2440;
 color:white;
 font-size:16px;
 }
-
 button{
 width:100%;
 padding:14px;
 border:none;
 border-radius:10px;
-font-size:18px;
+font-size:17px;
 font-weight:bold;
 cursor:pointer;
 background:linear-gradient(45deg,#00ffcc,#00aaff);
 color:black;
 margin-top:10px;
 }
-
 .hidden{display:none}
-
 header{
 background:#12182b;
 padding:15px;
 text-align:center;
 border-bottom:1px solid #00ffcc33;
 }
-
 .card{
 background:#12182b;
 margin:15px;
@@ -70,12 +63,12 @@ padding:15px;
 border-radius:14px;
 box-shadow:0 0 15px #00ffcc22;
 }
-
 .download{
 background:linear-gradient(45deg,#ffcc00,#ff8800);
-color:black;
 }
-
+.progress{
+background:linear-gradient(45deg,#00ff99,#00cc66);
+}
 footer{
 text-align:center;
 font-size:12px;
@@ -87,50 +80,61 @@ padding:10px;
 
 <body>
 
-<!-- LOCK SCREEN -->
-<div id="lock" class="center">
-  <div class="box">
-    <h2>🔐 Enter PIN</h2>
-    <input id="pin" placeholder="Enter PIN">
-    <button onclick="unlock()">Unlock</button>
-    <p style="font-size:13px;color:#aaa">Forgot PIN? Use password</p>
-  </div>
+<!-- SET PIN -->
+<div id="setPin" class="center">
+<div class="box">
+<h2>🔐 Set PIN</h2>
+<input id="newPin" placeholder="Create PIN">
+<button onclick="savePin()">Save PIN</button>
+</div>
 </div>
 
-<!-- SET PIN -->
-<div id="setPin" class="center hidden">
-  <div class="box">
-    <h2>🔑 Set Your PIN</h2>
-    <input id="newPin" placeholder="Create PIN">
-    <button onclick="savePin()">Save PIN</button>
-  </div>
+<!-- LOGIN -->
+<div id="login" class="center hidden">
+<div class="box">
+<h2>🔑 Enter PIN</h2>
+<input id="pin" placeholder="Enter PIN">
+<button onclick="unlock()">Unlock</button>
+<p style="font-size:13px;color:#aaa">Password: <b>Ali11</b></p>
+</div>
 </div>
 
 <!-- MAIN SITE -->
 <div id="site" class="hidden">
 
 <header>
-  <h2>🦅 ALI KHAN TRADER</h2>
-  <p>Reference: Ali Mansoori</p>
+<h2>🦅 ALI KHAN TRADER</h2>
+<p>Mode: 📳 Vibration ON</p>
 </header>
 
 <div class="card">
-  <h3>📡 Live Signal</h3>
-  <p style="font-size:22px">WAITING 🔄</p>
+<h3>🌍 Select Country</h3>
+<select>
+<option>Pakistan 🇵🇰📬</option>
+<option>India 🇮🇳🔒</option>
+<option>Nepal 🇳🇵</option>
+<option>Afghanistan 🇦🇫</option>
+</select>
 </div>
 
 <div class="card">
-  <h3>📱 Android App</h3>
-  <p>Download our official app for fast signals 🚀</p>
-
-  <a href="com-happymod-apk-3-2-5.apk" download>
-    <button class="download">⬇️ JACK – Download App</button>
-  </a>
+<h3>👤 User</h3>
+<p>Name: <b>Ali Khan</b></p>
+<p>Status: 🔥 Active Trader</p>
 </div>
 
 <div class="card">
-  <h3>🔔 Alerts</h3>
-  <p>Vibration enabled on new signal 📳</p>
+<h3>📱 Download Our App</h3>
+<a href="com-happymod-apk-3-2-5.apk" download>
+<button class="download">⬇️ Download App</button>
+</a>
+</div>
+
+<div class="card">
+<h3>🚀 Progress App</h3>
+<a href="admin.html">
+<button class="progress">Open Progress App</button>
+</a>
 </div>
 
 <footer>
@@ -140,26 +144,26 @@ padding:10px;
 </div>
 
 <script>
-let savedPin = localStorage.getItem("userPin");
+let savedPin=localStorage.getItem("pin");
 
-if(!savedPin){
-document.getElementById("lock").classList.add("hidden");
-document.getElementById("setPin").classList.remove("hidden");
+if(savedPin){
+document.getElementById("setPin").classList.add("hidden");
+document.getElementById("login").classList.remove("hidden");
 }
 
 function savePin(){
-let p=document.getElementById("newPin").value;
+let p=newPin.value;
 if(p.length<3){alert("PIN too short");return;}
-localStorage.setItem("userPin",p);
+localStorage.setItem("pin",p);
 location.reload();
 }
 
 function unlock(){
-let p=document.getElementById("pin").value;
-if(p===localStorage.getItem("userPin") || p==="Ali11"){
-document.getElementById("lock").classList.add("hidden");
-document.getElementById("site").classList.remove("hidden");
-if(navigator.vibrate) navigator.vibrate(200);
+let p=pin.value;
+if(p===localStorage.getItem("pin") || p==="Ali11"){
+login.classList.add("hidden");
+site.classList.remove("hidden");
+if(navigator.vibrate) navigator.vibrate([200,100,200]);
 }else{
 alert("Wrong PIN ❌");
 }
