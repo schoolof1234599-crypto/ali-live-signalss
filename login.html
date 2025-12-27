@@ -1,53 +1,84 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>Ali Signal Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
-  margin:0;
-  height:100vh;
+  background:#0b0b0b;
+  color:white;
+  font-family:Arial;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#0f172a;
-  color:white;
-  font-family:Arial;
+  height:100vh;
 }
 .box{
-  background:#020617;
-  padding:25px;
+  width:320px;
+  background:#111;
+  padding:20px;
   border-radius:10px;
-  width:300px;
+  box-shadow:0 0 20px #00ffcc;
 }
-input,button{
+h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+input{
   width:100%;
-  padding:10px;
-  margin:8px 0;
+  padding:12px;
+  margin:10px 0;
   border:none;
-  border-radius:6px;
+  border-radius:5px;
 }
 button{
-  background:#22c55e;
-  color:black;
+  width:100%;
+  padding:12px;
+  background:#00ffcc;
+  border:none;
+  font-size:16px;
   font-weight:bold;
+  cursor:pointer;
+}
+.error{
+  color:red;
+  text-align:center;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
+
 <div class="box">
-  <h2>🔐 لاگ اِن</h2>
-  <input type="text" placeholder="یوزر نیم">
-  <input type="password" placeholder="پاس ورڈ">
-  <button onclick="go()">لاگ اِن</button>
+  <h2>🔐 Login</h2>
+
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="login()">LOGIN</button>
+
+  <div id="error" class="error"></div>
 </div>
 
 <script>
-function go(){
-  window.location.href="dashboard.html";
+function login(){
+  let u = document.getElementById("username").value;
+  let p = document.getElementById("password").value;
+
+  if(u === "admin" && p === "1234"){
+    window.location.href = "admin.html";
+  }
+  else if(u === "user" && p === "1234"){
+    window.location.href = "user.html";
+  }
+  else{
+    document.getElementById("error").innerText = "❌ Wrong login";
+  }
 }
 </script>
+
 </body>
 </html>
