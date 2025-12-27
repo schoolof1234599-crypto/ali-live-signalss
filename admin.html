@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>ADMIN DASHBOARD</title>
+<title>Admin Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- FIREBASE -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -17,138 +17,43 @@ firebase.initializeApp({
 
 <style>
 body{
-  margin:0;
-  font-family:Arial;
-  background:#000;
-  color:#fff;
+  background:black;
+  color:white;
   text-align:center;
+  font-family:Arial;
 }
-
-header{
-  background:#111;
-  padding:15px;
-  font-size:22px;
-  font-weight:bold;
-}
-
-.container{
-  padding:15px;
-}
-
-.box{
-  background:#111;
-  border:1px solid #333;
-  padding:20px;
-  margin:10px 0;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.box:hover{
-  background:#1f2933;
-}
-
 button{
-  padding:12px 20px;
-  font-size:16px;
-  margin:5px;
-  border:none;
-  border-radius:6px;
-  color:#fff;
-  cursor:pointer;
+  padding:20px;
+  font-size:20px;
+  margin:10px;
+  width:200px;
 }
-
-select{
-  padding:10px;
-  font-size:16px;
-  border-radius:6px;
-}
-
-#controlPanel{
-  display:none;
-  margin-top:20px;
-  border:1px solid #333;
-  padding:15px;
-  border-radius:10px;
-}
-
-.green{background:#22c55e}
-.red{background:#ef4444}
-.gray{background:#64748b}
-.blue{background:#2563eb}
 </style>
-
-<script>
-// LOGIN CHECK
-if(localStorage.getItem("admin")!=="yes"){
-  window.location.href="index.html";
-}
-</script>
 </head>
 
 <body>
 
-<header>🛠 ADMIN DASHBOARD</header>
+<h1>🔐 ADMIN PANEL</h1>
 
-<div class="container">
+<input id="time" placeholder="Session Time (مثال 12:30)" style="padding:10px;width:200px"><br><br>
 
-  <!-- MAIN BOX -->
-  <div class="box" onclick="openControl()">
-    🎛 REMOTE LIVE FULL CONTROL
-  </div>
+<button onclick="sendSignal('BIG')" style="background:green;color:white">BIG</button>
+<button onclick="sendSignal('SMALL')" style="background:red;color:white">SMALL</button>
 
-  <!-- CONTROL PANEL -->
-  <div id="controlPanel">
-
-    <h2>🎯 LIVE SIGNAL CONTROL</h2>
-
-    <button class="green" onclick="selectSignal('BIG')">BIG</button>
-    <button class="red" onclick="selectSignal('SMALL')">SMALL</button>
-    <button class="gray" onclick="selectSignal('HOLD')">HOLD</button>
-
-    <br><br>
-
-    <select id="time">
-      <option value="30s">30 Seconds</option>
-      <option value="1m">1 Minute</option>
-      <option value="3m">3 Minutes</option>
-    </select>
-
-    <br><br>
-
-    <button class="blue" onclick="goLive()">✅ GO LIVE</button>
-
-    <h3 id="status">Waiting...</h3>
-
-  </div>
-
-</div>
+<h2 id="status">No Signal</h2>
 
 <script>
-let selectedSignal = "HOLD";
-
-function openControl(){
-  document.getElementById("controlPanel").style.display="block";
-}
-
-function selectSignal(sig){
-  selectedSignal = sig;
-  document.getElementById("status").innerText =
-    "Selected: " + sig;
-}
-
-function goLive(){
+function sendSignal(val){
   let t = document.getElementById("time").value;
 
   firebase.database().ref("liveSignal").set({
-    signal: selectedSignal,
+    signal: val,
     time: t,
-    status: "ON",
-    updated: Date.now()
+    at: Date.now()
   });
 
   document.getElementById("status").innerText =
-    "🟢 LIVE → " + selectedSignal + " | " + t;
+    "LIVE: " + val + " | Time: " + t;
 }
 </script>
 
