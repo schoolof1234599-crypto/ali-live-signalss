@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>User Dashboard</title>
@@ -17,61 +17,40 @@ firebase.initializeApp({
 
 <style>
 body{
-  background:#000;
-  color:#fff;
-  font-family:Arial;
+  background:black;
+  color:white;
   text-align:center;
-  margin:0;
-  padding:15px;
+  font-family:Arial;
 }
-.box{
-  border:2px solid #333;
-  padding:20px;
-  border-radius:10px;
-  margin-top:20px;
+h1{
+  font-size:40px;
 }
-.big{background:green;color:white}
-.small{background:red;color:white}
-.hold{background:gray;color:white}
-h1{font-size:40px}
 </style>
 </head>
 
 <body>
 
-<h2>📊 USER DASHBOARD</h2>
+<h1>🎯 LIVE SIGNAL</h1>
+<h2 id="signal">WAITING...</h2>
+<h3 id="time">--:--</h3>
 
-<div class="box">
-  <h3>🎯 WINGO LIVE</h3>
-  <h1 id="signalText" class="hold">WAITING</h1>
-  <p id="timeText">--</p>
-</div>
-
-<!-- Sounds -->
 <audio id="bigSound" src="big.mp3"></audio>
 <audio id="smallSound" src="small.mp3"></audio>
 
 <script>
-firebase.database().ref("liveSignal").on("value", snap=>{
-  let d = snap.val();
-  if(!d) return;
+firebase.database().ref("liveSignal").on("value", function(snapshot){
+  let data = snapshot.val();
+  if(!data) return;
 
-  let box = document.getElementById("signalText");
-  box.innerText = d.signal;
-  document.getElementById("timeText").innerText = "⏱ " + d.time;
+  document.getElementById("signal").innerText = data.signal;
+  document.getElementById("time").innerText = data.time;
 
-  box.className = "";
-
-  if(d.signal === "BIG"){
-    box.classList.add("big");
+  if(data.signal === "BIG"){
     document.getElementById("bigSound").play();
   }
-  else if(d.signal === "SMALL"){
-    box.classList.add("small");
+
+  if(data.signal === "SMALL"){
     document.getElementById("smallSound").play();
-  }
-  else{
-    box.classList.add("hold");
   }
 });
 </script>
