@@ -2,173 +2,155 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ali Khan Trader</title>
+<title>Ali Khan Trader App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:#0b0f1a;
-color:white;
-}
-.center{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-.box{
-background:#12182b;
-padding:25px;
-border-radius:15px;
-width:90%;
-max-width:380px;
-box-shadow:0 0 25px #00ffcc55;
-text-align:center;
-}
-input,select{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:8px;
-background:#1c2440;
-color:white;
-font-size:16px;
-}
-button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:10px;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-background:linear-gradient(45deg,#00ffcc,#00aaff);
-color:black;
-margin-top:10px;
+    font-family: Arial, sans-serif;
+    margin:0;
+    background:#0f172a;
+    color:white;
 }
 .hidden{display:none}
-header{
-background:#12182b;
-padding:15px;
-text-align:center;
-border-bottom:1px solid #00ffcc33;
+.container{
+    max-width:420px;
+    margin:auto;
+    padding:20px;
 }
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:8px;
+    border:none;
+}
+button{
+    background:#22c55e;
+    color:black;
+    font-weight:bold;
+}
+.dark{background:#0f172a;color:white}
+.light{background:#f1f5f9;color:black}
+
 .card{
-background:#12182b;
-margin:15px;
-padding:15px;
-border-radius:14px;
-box-shadow:0 0 15px #00ffcc22;
+    background:#1e293b;
+    padding:15px;
+    border-radius:12px;
+    margin-top:10px;
 }
-.download{
-background:linear-gradient(45deg,#ffcc00,#ff8800);
+.light .card{background:#ffffff}
+
+.toggle{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
-.progress{
-background:linear-gradient(45deg,#00ff99,#00cc66);
-}
-footer{
-text-align:center;
-font-size:12px;
-color:#777;
-padding:10px;
-}
+a{color:#38bdf8;text-decoration:none}
 </style>
 </head>
 
-<body>
+<body class="dark">
 
-<!-- SET PIN -->
-<div id="setPin" class="center">
-<div class="box">
-<h2>🔐 Set PIN</h2>
-<input id="newPin" placeholder="Create PIN">
-<button onclick="savePin()">Save PIN</button>
-</div>
-</div>
+<div class="container">
 
 <!-- LOGIN -->
-<div id="login" class="center hidden">
-<div class="box">
-<h2>🔑 Enter PIN</h2>
-<input id="pin" placeholder="Enter PIN">
-<button onclick="unlock()">Unlock</button>
-<p style="font-size:13px;color:#aaa">Password: <b>Ali11</b></p>
-</div>
-</div>
+<div id="login">
+    <h2>🔐 Login</h2>
+    <input type="email" placeholder="Email / Username">
+    <input type="password" id="pass" placeholder="Password">
+    <input type="number" placeholder="4 Digit PIN" maxlength="4">
+    <label><input type="checkbox" onclick="showPass()"> Show Password</label>
 
-<!-- MAIN SITE -->
-<div id="site" class="hidden">
+    <select>
+        <option>Select Country</option>
+        <option>Pakistan</option>
+        <option>India</option>
+        <option>Nepal</option>
+        <option>Afghanistan</option>
+    </select>
 
-<header>
-<h2>🦅 ALI KHAN TRADER</h2>
-<p>Mode: 📳 Vibration ON</p>
-</header>
-
-<div class="card">
-<h3>🌍 Select Country</h3>
-<select>
-<option>Pakistan 🇵🇰📬</option>
-<option>India 🇮🇳🔒</option>
-<option>Nepal 🇳🇵</option>
-<option>Afghanistan 🇦🇫</option>
-</select>
+    <button onclick="openDashboard()">Login</button>
+    <p><a href="#">Forgot Password?</a></p>
 </div>
 
-<div class="card">
-<h3>👤 User</h3>
-<p>Name: <b>Ali Khan</b></p>
-<p>Status: 🔥 Active Trader</p>
-</div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+    <h2>📊 Dashboard</h2>
 
-<div class="card">
-<h3>📱 Download Our App</h3>
-<a href="com-happymod-apk-3-2-5.apk" download>
-<button class="download">⬇️ Download App</button>
-</a>
-</div>
+    <div class="card">
+        👤 <b>Ali Khan</b><br>
+        🌍 Country: <span id="country">Pakistan</span>
+    </div>
 
-<div class="card">
-<h3>🚀 Progress App</h3>
-<a href="admin.html">
-<button class="progress">Open Progress App</button>
-</a>
-</div>
+    <div class="card">
+        📈 Live Chart<br>
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BTCUSDT&interval=15"
+        width="100%" height="200" frameborder="0"></iframe>
+    </div>
 
-<footer>
-© 2025 Ali Khan Trader
-</footer>
+    <div class="card">
+        💹 Signals: BUY / SELL<br>
+        🕒 Session: 9AM – 5PM
+    </div>
+
+    <div class="card toggle">
+        🌙 Dark Mode
+        <button onclick="toggleMode()">ON/OFF</button>
+    </div>
+
+    <div class="card">
+        ⬇️ Download Our App<br><br>
+        <a href="app.apk" download>
+            <button>📦 Download APK</button>
+        </a>
+    </div>
+
+    <div class="card">
+        🔗 Progress App<br><br>
+        <a href="https://example.com" target="_blank">
+            <button>Open Progress App</button>
+        </a>
+    </div>
+
+    <div class="card">
+        💬 Help & Support<br><br>
+        <a href="https://wa.me/923001234567" target="_blank">
+            <button>WhatsApp Support</button>
+        </a>
+    </div>
+
+    <div class="card">
+        🔒 Security<br>
+        ✔ Change PIN<br>
+        ✔ Logout All Devices<br>
+        ✔ Account Lock
+    </div>
+
+    <button onclick="logout()">🚪 Logout</button>
+</div>
 
 </div>
 
 <script>
-let savedPin=localStorage.getItem("pin");
-
-if(savedPin){
-document.getElementById("setPin").classList.add("hidden");
-document.getElementById("login").classList.remove("hidden");
+function openDashboard(){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
 }
 
-function savePin(){
-let p=newPin.value;
-if(p.length<3){alert("PIN too short");return;}
-localStorage.setItem("pin",p);
-location.reload();
+function logout(){
+    location.reload();
 }
 
-function unlock(){
-let p=pin.value;
-if(p===localStorage.getItem("pin") || p==="Ali11"){
-login.classList.add("hidden");
-site.classList.remove("hidden");
-if(navigator.vibrate) navigator.vibrate([200,100,200]);
-}else{
-alert("Wrong PIN ❌");
+function showPass(){
+    let p=document.getElementById("pass");
+    p.type = p.type==="password" ? "text":"password";
 }
+
+function toggleMode(){
+    document.body.classList.toggle("light");
 }
 </script>
 
 </body>
-  </html>
+</html>
