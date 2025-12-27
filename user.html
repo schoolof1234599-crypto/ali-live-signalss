@@ -47,20 +47,33 @@ button{
     align-items:center;
 }
 a{color:#38bdf8;text-decoration:none}
+.error{
+    color:#ff4d4d;
+    font-size:14px;
+}
 </style>
 </head>
 
 <body class="dark">
+
+<!-- 🎵 Background Music -->
+<audio id="bgMusic" autoplay loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
 
 <div class="container">
 
 <!-- LOGIN -->
 <div id="login">
     <h2>🔐 Login</h2>
+
     <input type="email" placeholder="Email / Username">
     <input type="password" id="pass" placeholder="Password">
-    <input type="number" placeholder="4 Digit PIN" maxlength="4">
-    <label><input type="checkbox" onclick="showPass()"> Show Password</label>
+    <input type="text" id="pin" placeholder="Enter PIN (Ali11)">
+    
+    <label>
+        <input type="checkbox" onclick="showPass()"> Show Password
+    </label>
 
     <select>
         <option>Select Country</option>
@@ -70,7 +83,9 @@ a{color:#38bdf8;text-decoration:none}
         <option>Afghanistan</option>
     </select>
 
-    <button onclick="openDashboard()">Login</button>
+    <p id="pinError" class="error hidden">❌ Wrong PIN! Access Denied</p>
+
+    <button onclick="checkPIN()">Login</button>
     <p><a href="#">Forgot Password?</a></p>
 </div>
 
@@ -80,13 +95,7 @@ a{color:#38bdf8;text-decoration:none}
 
     <div class="card">
         👤 <b>Ali Khan</b><br>
-        🌍 Country: <span id="country">Pakistan</span>
-    </div>
-
-    <div class="card">
-        📈 Live Chart<br>
-        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BTCUSDT&interval=15"
-        width="100%" height="200" frameborder="0"></iframe>
+        🌍 Country: Pakistan
     </div>
 
     <div class="card">
@@ -95,8 +104,8 @@ a{color:#38bdf8;text-decoration:none}
     </div>
 
     <div class="card toggle">
-        🌙 Dark Mode
-        <button onclick="toggleMode()">ON/OFF</button>
+        🌙 Dark / Light Mode
+        <button onclick="toggleMode()">ON / OFF</button>
     </div>
 
     <div class="card">
@@ -123,8 +132,7 @@ a{color:#38bdf8;text-decoration:none}
     <div class="card">
         🔒 Security<br>
         ✔ Change PIN<br>
-        ✔ Logout All Devices<br>
-        ✔ Account Lock
+        ✔ Account Lock on wrong PIN
     </div>
 
     <button onclick="logout()">🚪 Logout</button>
@@ -133,9 +141,17 @@ a{color:#38bdf8;text-decoration:none}
 </div>
 
 <script>
-function openDashboard(){
-    document.getElementById("login").classList.add("hidden");
-    document.getElementById("dashboard").classList.remove("hidden");
+function checkPIN(){
+    let pin = document.getElementById("pin").value;
+    let error = document.getElementById("pinError");
+
+    if(pin === "Ali11"){
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+        document.getElementById("bgMusic").play();
+    } else {
+        error.classList.remove("hidden");
+    }
 }
 
 function logout(){
@@ -153,4 +169,4 @@ function toggleMode(){
 </script>
 
 </body>
-</html>
+        </html>
