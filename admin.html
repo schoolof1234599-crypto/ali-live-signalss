@@ -1,59 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>Admin Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+  background:#000;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding-top:50px;
+}
+button{
+  width:80%;
+  padding:20px;
+  font-size:30px;
+  margin:15px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+.big{background:green;color:white;}
+.small{background:red;color:white;}
+#status{margin-top:30px;font-size:22px;}
+</style>
+</head>
+<body>
+
+<h2>👑 ADMIN SIGNAL CONTROL</h2>
+
+<button class="big" onclick="sendSignal('BIG')">BIG</button>
+<button class="small" onclick="sendSignal('SMALL')">SMALL</button>
+
+<div id="status">No Signal</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-firebase.initializeApp({
-  databaseURL: "https://alisignal-default-rtdb.firebaseio.com/"
-});
-</script>
+var firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+};
+firebase.initializeApp(firebaseConfig);
 
-<style>
-body{
-  background:black;
-  color:white;
-  text-align:center;
-  font-family:Arial;
-}
-button{
-  padding:20px;
-  font-size:20px;
-  margin:10px;
-  width:200px;
-}
-</style>
-</head>
-
-<body>
-
-<h1>🔐 ADMIN PANEL</h1>
-
-<input id="time" placeholder="Session Time (مثال 12:30)" style="padding:10px;width:200px"><br><br>
-
-<button onclick="sendSignal('BIG')" style="background:green;color:white">BIG</button>
-<button onclick="sendSignal('SMALL')" style="background:red;color:white">SMALL</button>
-
-<h2 id="status">No Signal</h2>
-
-<script>
-function sendSignal(val){
-  let t = document.getElementById("time").value;
-
-  firebase.database().ref("liveSignal").set({
-    signal: val,
-    time: t,
-    at: Date.now()
+function sendSignal(sig){
+  firebase.database().ref("signal").set({
+    current: sig
   });
-
-  document.getElementById("status").innerText =
-    "LIVE: " + val + " | Time: " + t;
+  document.getElementById("status").innerText = "LIVE: " + sig;
 }
 </script>
 
